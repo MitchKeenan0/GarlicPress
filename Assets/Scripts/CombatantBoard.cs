@@ -33,5 +33,9 @@ public class CombatantBoard : MonoBehaviour
 		{
 			GameObject cellObj = Instantiate(cellSlotPrefab, boardRect);
 		}
+
+		BoardEditor be = GetComponent<BoardEditor>();
+		if (be != null)
+			be.InitSlots();
 	}
 }
