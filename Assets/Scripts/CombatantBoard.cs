@@ -9,8 +9,8 @@ public class CombatantBoard : MonoBehaviour
 	public int height = 3;
 	public RectTransform boardRect;
 	private GridLayoutGroup grid;
-	public GameObject cellSlotPrefab;
-	public CombatantCell[] cellPrefabs;
+	public CellSlot cellSlotPrefab;
+	public CellData firstCellPrefab;
 
 	private float boardWidth = -1f;
 	private float boardHeight = -1f;
@@ -31,11 +31,12 @@ public class CombatantBoard : MonoBehaviour
 		int numCells = width * height;
 		for(int i = 0; i < numCells; i++)
 		{
-			GameObject cellObj = Instantiate(cellSlotPrefab, boardRect);
+			CellSlot cellSlot = Instantiate(cellSlotPrefab, boardRect);
+			cellSlot.LoadCell(firstCellPrefab);
 		}
 
-		BoardEditor be = GetComponent<BoardEditor>();
+		BoardEditor be = FindObjectOfType<BoardEditor>();
 		if (be != null)
-			be.InitSlots();
+			be.LoadSlots();
 	}
 }

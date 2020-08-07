@@ -7,12 +7,28 @@ public class CellSlot : MonoBehaviour
 {
 	private Image image;
 	private BoardEditor boardEditor;
+	private ColorBlinker colorBlinker;
+	private CellData cellData;
+	private Button button;
 
-    void Start()
+    void Awake()
     {
 		image = GetComponent<Image>();
-		boardEditor = transform.root.GetComponent<BoardEditor>();
+		colorBlinker = GetComponent<ColorBlinker>();
+		boardEditor = FindObjectOfType<BoardEditor>();
+		button = GetComponent<Button>();
     }
+
+	public void LoadCell(CellData cd)
+	{
+		cellData = cd;
+		image.sprite = cd.cellSprite;
+	}
+
+	public void SetInteractible(bool value)
+	{
+		button.interactable = value;
+	}
 
 	public void SetMaterial(Material value)
 	{
@@ -22,5 +38,11 @@ public class CellSlot : MonoBehaviour
 	public void SelectSlot()
 	{
 		boardEditor.EnableSlotManipulation(false);
+		boardEditor.PlaceCell(this);
+	}
+
+	public void SetBlinking(bool value)
+	{
+		colorBlinker.SetEnabled(value);
 	}
 }

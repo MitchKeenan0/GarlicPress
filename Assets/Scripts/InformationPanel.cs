@@ -23,16 +23,17 @@ public class InformationPanel : MonoBehaviour
 		nameText.text = cd.cellName;
 		cellImage.sprite = cd.cellSprite;
 		descriptionText.text = cd.description;
+		boardEditor.UpdateHotCell(cd);
 	}
 
 	public void UseCell()
 	{
-		cellLibrary.ShowInfo(false);
+		cellLibrary.ShowInfo(false, null);
 		boardEditor.EnableSlotManipulation(true);
 	}
 
 	public void CloseInformationPanel()
 	{
-		cellLibrary.ShowInfo(false);
+		cellLibrary.ShowInfo(false, null);
 	}
 }
