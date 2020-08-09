@@ -13,7 +13,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Input
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Input
+    uniqueID: 572319489
+    locked: 0
+  - name: CellSlot
+    uniqueID: 1081009615
     locked: 0

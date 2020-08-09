@@ -53,11 +53,24 @@ public class Game : MonoBehaviour
 		{
 			List<CellSlot> boardSlots = new List<CellSlot>();
 			boardSlots = playerBoard.GetSlots();
-			foreach(CellSlot cs in boardSlots)
+			for(int i = 0; i < boardSlots.Count; i++)
 			{
-				CellData cd = cs.GetCell();
-				playerCells.Add(cd);
-				playerCellIDs.Add(cd.saveID);
+				CellData cd = boardSlots[i].GetCell();
+				if (cd != null)
+				{
+					playerCells.Add(cd);
+					if (playerCellIDs.Count > i)
+						playerCellIDs[i] = cd.saveID;
+					else
+						playerCellIDs.Add(cd.saveID);
+				}
+				else
+				{
+					if (playerCellIDs.Count > i)
+						playerCellIDs[i] = -1;
+					else
+						playerCellIDs.Add(-1);
+				}
 			}
 		}
 		save.playerCellIDs = playerCellIDs;
@@ -80,9 +93,15 @@ public class Game : MonoBehaviour
 			for(int i = 0; i < save.playerCellIDs.Count; i++)
 			{
 				int cdID = save.playerCellIDs[i];
-				CellData IDCellData = cellLibrary.allCells[cdID];
-				playerCells.Add(IDCellData);
-				Debug.Log(IDCellData.cellName);
+				if (cdID >= 0)
+				{
+					CellData IDCellData = cellLibrary.allCells[cdID];
+					playerCells.Add(IDCellData);
+				}
+				else
+				{
+					playerCells.Add(null);
+				}
 			}
 
 			playerBoard.LoadBoard(playerCells);

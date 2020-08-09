@@ -14,14 +14,13 @@ public class ColorBlinker : MonoBehaviour
 	private float lastColorChangeTime;
 	private bool bEnabled = false;
 
-	private Material material;
+	private Image image;
 
 	void Start()
 	{
-		material = this.transform.GetComponent<Image>().material;
+		image = transform.GetComponent<Image>();
 		startColor = Color1;
 		endColor = Color2;
-		material.color = Color.white;
 	}
 
 	void Update()
@@ -30,7 +29,7 @@ public class ColorBlinker : MonoBehaviour
 		{
 			var ratio = (Time.time - lastColorChangeTime) / FadeDuration;
 			ratio = Mathf.Clamp01(ratio);
-			material.color = Color.Lerp(startColor, endColor, ratio * ratio);
+			image.color = Color.Lerp(startColor, endColor, ratio * ratio);
 
 			if (ratio == 1f)
 			{
@@ -49,6 +48,6 @@ public class ColorBlinker : MonoBehaviour
 		bEnabled = value;
 
 		if (!bEnabled)
-			material.color = Color1;
+			image.color = Color1;
 	}
 }

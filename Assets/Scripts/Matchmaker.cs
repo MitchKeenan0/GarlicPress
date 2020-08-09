@@ -52,7 +52,7 @@ public class Matchmaker : MonoBehaviour
 		ShowStatusCG(true);
 		bActive = true;
 		/// temp code until LFG
-		minimumLoadTime = Random.Range(0.8f, 2.6f);
+		minimumLoadTime = Random.Range(0.3f, 2.15f);
 	}
 
 	public void PlayCoop()

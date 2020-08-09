@@ -5,11 +5,14 @@ using UnityEngine.UI;
 
 public class CellSlot : MonoBehaviour
 {
+	public CanvasGroup highlightCanvasGroup;
 	private Image image;
 	private BoardEditor boardEditor;
 	private ColorBlinker colorBlinker;
 	private CellData cellData;
 	private Button button;
+	private Sprite slotSprite;
+	private Color slotColor;
 
 	public CellData GetCell() { return cellData; }
 
@@ -19,12 +22,19 @@ public class CellSlot : MonoBehaviour
 		colorBlinker = GetComponent<ColorBlinker>();
 		boardEditor = FindObjectOfType<BoardEditor>();
 		button = GetComponent<Button>();
+		slotSprite = image.sprite;
+		slotColor = image.color;
+		ShowHighlight(false);
     }
 
 	public void LoadCell(CellData cd)
 	{
 		cellData = cd;
-		image.sprite = cd.cellSprite;
+		if (cellData != null)
+		{
+			image.sprite = cd.cellSprite;
+			image.color = Color.white;
+		}
 	}
 
 	public void SetInteractible(bool value)
@@ -45,6 +55,19 @@ public class CellSlot : MonoBehaviour
 
 	public void SetBlinking(bool value)
 	{
-		colorBlinker.SetEnabled(value);
+		ShowHighlight(value);
+		//colorBlinker.SetEnabled(value);
+	}
+
+	public void ShowHighlight(bool value)
+	{
+		highlightCanvasGroup.alpha = value ? 1f : 0f;
+	}
+
+	public void ClearCell()
+	{
+		cellData = null;
+		image.sprite = slotSprite;
+		image.color = slotColor;
 	}
 }

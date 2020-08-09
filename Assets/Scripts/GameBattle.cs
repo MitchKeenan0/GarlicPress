@@ -7,10 +7,12 @@ public class GameBattle : Game
 	public CanvasGroup loadPageCanvasGroup;
 	public float loadDuration = 1f;
 
+	private Battle battle;
 	private IEnumerator loadCoroutine;
 
     void Start()
     {
+		battle = FindObjectOfType<Battle>();
 		loadCoroutine = LoadDelay();
 		StartCoroutine(loadCoroutine);
     }
@@ -37,6 +39,7 @@ public class GameBattle : Game
 		ShowLoadPage(true);
 		LoadGame();
 		yield return new WaitForSeconds(loadDuration);
+		battle.InitBattle(playerBoard, opponentBoard);
 		ShowLoadPage(false);
 	}
 }
