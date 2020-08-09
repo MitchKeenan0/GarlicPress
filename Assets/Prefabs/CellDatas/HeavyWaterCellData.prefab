@@ -49,3 +49,4 @@ MonoBehaviour:
   health: 1
   description: sh_t's radioactive
   abilityArray: []
+  saveID: 1

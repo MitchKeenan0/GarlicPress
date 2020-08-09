@@ -1,0 +1,110 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
+
+public class Game : MonoBehaviour
+{
+	public CombatantBoard playerBoard;
+	public CombatantBoard opponentBoard;
+	public List<CellData> playerCells;
+
+    void Start()
+    {
+		playerCells = new List<CellData>();
+		//DeleteSave();
+	}
+
+	//public virtual void SavePlayerBoardAsJSON()
+	//{
+	//	Save save = CreatePlayerBoardSave();
+	//	string json = JsonUtility.ToJson(save);
+	//	Debug.Log("Saving as JSON: " + json);
+	//}
+
+	public virtual void SaveGame()
+	{
+		Save save = CreatePlayerBoardSave();
+
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
+		bf.Serialize(file, save);
+		file.Close();
+
+		Debug.Log("Game Saved");
+	}
+
+	private Save CreatePlayerBoardSave()
+	{
+		Save save = new Save();
+		List<int> playerCellIDs = new List<int>();
+		CombatantBoard playerBoard = null;
+		CombatantBoard[] boards = FindObjectsOfType<CombatantBoard>();
+		foreach(CombatantBoard cb in boards)
+		{
+			if (cb.tag == "Player")
+			{
+				playerBoard = cb;
+				break;
+			}
+		}
+		if (playerBoard != null)
+		{
+			List<CellSlot> boardSlots = new List<CellSlot>();
+			boardSlots = playerBoard.GetSlots();
+			foreach(CellSlot cs in boardSlots)
+			{
+				CellData cd = cs.GetCell();
+				playerCells.Add(cd);
+				playerCellIDs.Add(cd.saveID);
+			}
+		}
+		save.playerCellIDs = playerCellIDs;
+		return save;
+	}
+
+	public virtual void LoadGame()
+	{
+		// 1
+		if (File.Exists(Application.persistentDataPath + "/gamesave.save"))
+		{
+			CharacterDataPlayer player = FindObjectOfType<CharacterDataPlayer>();
+
+			BinaryFormatter bf = new BinaryFormatter();
+			FileStream file = File.Open(Application.persistentDataPath + "/gamesave.save", FileMode.Open);
+			Save save = (Save)bf.Deserialize(file);
+			file.Close();
+
+			CellLibrary cellLibrary = FindObjectOfType<CellLibrary>();
+			for(int i = 0; i < save.playerCellIDs.Count; i++)
+			{
+				int cdID = save.playerCellIDs[i];
+				CellData IDCellData = cellLibrary.allCells[cdID];
+				playerCells.Add(IDCellData);
+				Debug.Log(IDCellData.cellName);
+			}
+
+			playerBoard.LoadBoard(playerCells);
+
+			Debug.Log("Game Loaded");
+		}
+		else
+		{
+			Debug.Log("No game saved!");
+		}
+	}
+
+	public virtual void DeleteSave()
+	{
+		try
+		{
+			File.Delete(Application.persistentDataPath + "/gamesave.save");
+			Debug.Log("deleted save");
+		}
+		catch (System.Exception ex)
+		{
+			Debug.LogException(ex);
+		}
+	}
+}

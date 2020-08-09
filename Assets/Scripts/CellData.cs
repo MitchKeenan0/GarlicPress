@@ -10,6 +10,7 @@ public class CellData : MonoBehaviour
 	public int health = 1;
 	public string description = "this cell f_cks";
 	public CellAbility[] abilityArray;
+	public int saveID = 0;
 
     void Start()
     {

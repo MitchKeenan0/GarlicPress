@@ -17,20 +17,23 @@ public class CellLibrary : MonoBehaviour
 
 	void Start()
     {
-		libraryCanvasGroup = libraryTransform.GetComponent<CanvasGroup>();
-		informationCanvasGroup = informationTransform.GetComponent<CanvasGroup>();
-		informationPanel = GetComponentInChildren<InformationPanel>();
-		boardEditor = GetComponent<BoardEditor>();
-		EnableInformation(false);
-
-		int numCells = allCells.Length;
-		for (int i = 0; i < numCells; i++)
+		if (FindObjectOfType<BoardEditor>() != null)
 		{
-			CellOption cellOption = Instantiate(optionPrefab, libraryTransform);
-			if ((allCells.Length > i) && (allCells[i] != null))
+			libraryCanvasGroup = libraryTransform.GetComponent<CanvasGroup>();
+			informationCanvasGroup = informationTransform.GetComponent<CanvasGroup>();
+			informationPanel = GetComponentInChildren<InformationPanel>();
+			boardEditor = GetComponent<BoardEditor>();
+			EnableInformation(false);
+
+			int numCells = allCells.Length;
+			for (int i = 0; i < numCells; i++)
 			{
-				CellData cellData = allCells[i];
-				cellOption.LoadCell(cellData);
+				CellOption cellOption = Instantiate(optionPrefab, libraryTransform);
+				if ((allCells.Length > i) && (allCells[i] != null))
+				{
+					CellData cellData = allCells[i];
+					cellOption.LoadCell(cellData);
+				}
 			}
 		}
     }

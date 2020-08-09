@@ -11,6 +11,8 @@ public class CellSlot : MonoBehaviour
 	private CellData cellData;
 	private Button button;
 
+	public CellData GetCell() { return cellData; }
+
     void Awake()
     {
 		image = GetComponent<Image>();

@@ -10,12 +10,14 @@ public class BoardEditor : MonoBehaviour
 
 	private List<CellSlot> slotList;
 	private CellData hotCellData = null;
+	private Game game;
 	private bool bEditing = false;
 
     void Awake()
     {
 		slotList = new List<CellSlot>();
 		EnableCancelButton(false);
+		game = FindObjectOfType<Game>();
     }
 
 	public void EnableCancelButton(bool value)
@@ -62,6 +64,7 @@ public class BoardEditor : MonoBehaviour
 			bEditing = true;
 			hotCellData = null;
 		}
+		game.SaveGame();
 	}
 
 	public void CancelBoardEdit()

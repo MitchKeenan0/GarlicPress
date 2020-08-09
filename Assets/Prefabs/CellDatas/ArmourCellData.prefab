@@ -49,3 +49,4 @@ MonoBehaviour:
   health: 2
   description: protecc
   abilityArray: []
+  saveID: 2

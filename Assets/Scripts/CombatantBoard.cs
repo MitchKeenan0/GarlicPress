@@ -14,17 +14,33 @@ public class CombatantBoard : MonoBehaviour
 
 	private float boardWidth = -1f;
 	private float boardHeight = -1f;
+	private List<CellSlot> slotList;
+	private List<CellData> cellList;
 
-    void Start()
+	public List<CellSlot> GetSlots() { return slotList; }
+
+    void Awake()
     {
 		InitBoard();
     }
 
+	public void LoadBoard(List<CellData> cells)
+	{
+		for (int i = 0; i < cells.Count; i++)
+		{
+			slotList[i].LoadCell(cells[i]);
+		}
+	}
+
 	void InitBoard()
 	{
+		slotList = new List<CellSlot>();
+		cellList = new List<CellData>();
+
 		grid = boardRect.GetComponent<GridLayoutGroup>();
 		grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
 		grid.constraintCount = width;
+
 		boardWidth = boardRect.sizeDelta.x;
 		boardHeight = boardRect.sizeDelta.y;
 
@@ -33,6 +49,7 @@ public class CombatantBoard : MonoBehaviour
 		{
 			CellSlot cellSlot = Instantiate(cellSlotPrefab, boardRect);
 			cellSlot.LoadCell(firstCellPrefab);
+			slotList.Add(cellSlot);
 		}
 
 		BoardEditor be = FindObjectOfType<BoardEditor>();
