@@ -120,17 +120,18 @@ public class BoardEditor : MonoBehaviour
 					}
 					cellDataList[slotIndex] = hotCellData;
 				}
-				Debug.Log("new slot");
 			}
-			else
+			else if (intoSlot.GetCell() != null)
 			{
 				/// or overwrite existing cell
 				intoSlot.LoadCell(hotCellData);
-				cellDataList[slotIndex] = hotCellData;
-				Debug.Log("existing slot");
+				if (cellDataList.Count > slotIndex)
+					cellDataList[slotIndex] = hotCellData;
+				else
+					cellDataList.Add(hotCellData);
 			}
-			UpdateCellCount();
 			hotCellData = null;
+			UpdateCellCount();
 			game.SaveGame();
 		}
 	}

@@ -11,6 +11,8 @@ public class Battle : MonoBehaviour
 	private CombatantBoard playerBoard;
 	private CombatantBoard opponentBoard;
 	private BattleUI battleUI;
+	private Health playerHealth;
+	private Health opponentHealth;
 
 	private IEnumerator warmupCoroutine;
 	private IEnumerator battleCoroutine;
@@ -23,7 +25,9 @@ public class Battle : MonoBehaviour
 	public void InitBattle(CombatantBoard player, CombatantBoard opponent)
 	{
 		playerBoard = player;
+		playerHealth = playerBoard.GetComponent<Health>();
 		opponentBoard = opponent;
+		opponentHealth = opponentBoard.GetComponent<Health>();
 
 		warmupCoroutine = Warmup();
 		StartCoroutine(warmupCoroutine);
@@ -39,29 +43,63 @@ public class Battle : MonoBehaviour
 			ResolveCellPair(playerSlot, opponentSlot);
 			yield return new WaitForSeconds(cellResolveTime);
 		}
-		Debug.Log("GG");
+
+		if (BothCharactersAlive())
+		{
+			/// next round
+			warmupCoroutine = Warmup();
+			StartCoroutine(warmupCoroutine);
+		}
+	}
+
+	bool BothCharactersAlive()
+	{
+		bool result = ((playerHealth.GetHP() > 0) && (opponentHealth.GetHP() > 0));
+		return result;
 	}
 
 	void ResolveCellPair(CellSlot cellSlotA, CellSlot cellSlotB)
 	{
-		cellSlotA.SetBlinking(true);
-		cellSlotB.SetBlinking(true);
+		cellSlotA.HighlightForDuration(0.5f);
+		cellSlotB.HighlightForDuration(0.5f);
 
 		CellData cellA = cellSlotA.GetCell();
 		CellData cellB = cellSlotB.GetCell();
 
 		if ((cellB != null) && (cellA == null))
 		{
-			battleUI.ToastInteraction(cellSlotA.transform.position, cellB.damage);
+			if (cellB.damage != 0)
+			{
+				battleUI.ToastInteraction(cellSlotA.transform.position, cellB.damage);
+				cellSlotA.TakeDamage(cellB.damage);
+			}
 		}
 		else if ((cellA != null) && (cellB == null))
 		{
-			battleUI.ToastInteraction(cellSlotB.transform.position, cellA.damage);
+			if (cellA.damage != 0)
+			{
+				battleUI.ToastInteraction(cellSlotB.transform.position, cellA.damage);
+				cellSlotB.TakeDamage(cellA.damage);
+			}
 		}
 		else if ((cellA != null) && (cellB != null))
 		{
-			battleUI.ToastInteraction(cellSlotA.transform.position, cellB.damage);
-			battleUI.ToastInteraction(cellSlotB.transform.position, cellA.damage);
+			if (cellB.damage != 0)
+			{
+				battleUI.ToastInteraction(cellSlotA.transform.position, cellB.damage);
+				cellSlotA.TakeDamage(cellB.damage);
+			}
+			if (cellA.damage != 0)
+			{
+				battleUI.ToastInteraction(cellSlotB.transform.position, cellA.damage);
+				cellSlotB.TakeDamage(cellB.damage);
+			}
+		}
+
+		if (!BothCharactersAlive())
+		{
+			StopAllCoroutines();
+			battleUI.GameOver();
 		}
 	}
 

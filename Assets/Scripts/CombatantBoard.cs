@@ -15,6 +15,7 @@ public class CombatantBoard : MonoBehaviour
 	public bool bLiveCells = false;
 	public CombatantCell combatCellPrefab;
 
+	private Health health;
 	private float boardWidth = -1f;
 	private float boardHeight = -1f;
 	private List<CellSlot> slotList;
@@ -28,28 +29,30 @@ public class CombatantBoard : MonoBehaviour
 		slotList = new List<CellSlot>();
 		cellList = new List<CellData>();
 		combatCellList = new List<CombatantCell>();
+		health = GetComponent<Health>();
 		InitBoard();
     }
 
 	public void LoadBoard(List<CellData> cells)
 	{
-		if (slotList == null)
-		{
-			Debug.Log("no slot list");
-		}
 		if (slotList != null)
 		{
 			for (int i = 0; i < cells.Count; i++)
 			{
 				slotList[i].LoadCell(cells[i]);
 				if (bLiveCells)
-					SpawnCombatCell(cells[i], slotList[i].transform);
+					SpawnCombatCell(cells[i], slotList[i]);
 			}
 		}
 
 		BoardEditor be = FindObjectOfType<BoardEditor>();
 		if (be != null)
 			be.LoadSlots();
+	}
+
+	public void TakeDamage(int value)
+	{
+		health.TakeDamage(value);
 	}
 
 	void InitBoard()
@@ -71,12 +74,17 @@ public class CombatantBoard : MonoBehaviour
 		BoardEditor be = FindObjectOfType<BoardEditor>();
 		if (be != null)
 			be.LoadSlots();
+
+		BoardGenerator bg = GetComponent<BoardGenerator>();
+		if (bg != null)
+			bg.GenerateBoard();
 	}
 
-	void SpawnCombatCell(CellData cellData, Transform parentTransform)
+	void SpawnCombatCell(CellData cellData, CellSlot parentSlot)
 	{
-		CombatantCell cc = Instantiate(combatCellPrefab, parentTransform);
+		CombatantCell cc = Instantiate(combatCellPrefab, parentSlot.transform);
 		cc.LoadCell(cellData);
 		combatCellList.Add(cc);
+		parentSlot.LoadCombatCell(cc);
 	}
 }

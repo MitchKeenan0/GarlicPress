@@ -47,3 +47,6 @@ TagManager:
   - name: CellSlot
     uniqueID: 1081009615
     locked: 0
+  - name: Particles
+    uniqueID: 4017686635
+    locked: 0

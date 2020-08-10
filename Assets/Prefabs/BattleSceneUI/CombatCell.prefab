@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8937888207544496314}
   - component: {fileID: 8937888207544496313}
   - component: {fileID: 8937888207544496315}
+  - component: {fileID: 2840713007077159016}
   m_Layer: 5
   m_Name: CombatCell
   m_TagString: Untagged
@@ -87,3 +88,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef90935fac0b6ab48abc23a152c78087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2840713007077159016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8937888207544496295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2fa1925ebd6c9b4a81888372a1aa2f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 5

@@ -1,16 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleUI : MonoBehaviour
 {
+	public GameOverPanel gameOverPanel;
 	public InteractionToast interactionTextPrefab;
 	public int toastPoolStartSize = 3;
 
+	private CanvasGroup gameOverPanelCanvasGroup;
 	private List<InteractionToast> interactionToastList;
 
     void Start()
     {
+		gameOverPanelCanvasGroup = gameOverPanel.GetComponent<CanvasGroup>();
+		SetGameOverCanvasGroup(false);
 		interactionToastList = new List<InteractionToast>();
         for(int i = 0; i < toastPoolStartSize; i++)
 		{
@@ -26,6 +31,7 @@ public class BattleUI : MonoBehaviour
 			SpawnInteractionToast();
 			toast = GetInteractionToast();
 		}
+		toast.SetInteractionDetails(null, value.ToString("F0"));
 		toast.transform.position = screenPosition;
 		toast.SetToastActive(true);
 	}
@@ -49,5 +55,22 @@ public class BattleUI : MonoBehaviour
 		InteractionToast it = Instantiate(interactionTextPrefab, transform);
 		it.SetToastActive(false);
 		interactionToastList.Add(it);
+	}
+
+	public void GameOver()
+	{
+		SetGameOverCanvasGroup(true);
+	}
+
+	void SetGameOverCanvasGroup(bool value)
+	{
+		gameOverPanelCanvasGroup.alpha = value ? 1f : 0f;
+		gameOverPanelCanvasGroup.interactable = value;
+		gameOverPanelCanvasGroup.blocksRaycasts = value;
+	}
+
+	public void ReturnHome()
+	{
+		SceneManager.LoadScene("HomeScene");
 	}
 }
