@@ -8,6 +8,7 @@ public class CellData : MonoBehaviour
 	public Sprite cellSprite;
 	public int damage = 1;
 	public int health = 1;
+	public int cellValue = 1;
 	public string description = "this cell f_cks";
 	public CellAbility[] abilityArray;
 	public int saveID = 0;

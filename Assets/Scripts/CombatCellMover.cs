@@ -50,13 +50,13 @@ public class CombatCellMover : MonoBehaviour
 				transform.localPosition = Vector3.zero;
 				transform.localScale = Vector3.one;
 				cellSlot = closestSlot.GetComponent<CellSlot>();
-				cellSlot.LoadCell(combatCell);
+				cellSlot.LoadCell(combatCell, false);
 			}
 
 			if (moveCounter != null)
 				moveCounter.SpendMoveToken(1);
 
-			moveOriginSlot.ClearCell();
+			moveOriginSlot.ClearCell(false);
 		}
 	}
 
@@ -66,8 +66,9 @@ public class CombatCellMover : MonoBehaviour
 		moveCounter = counter;
 	}
 
-	public void SetMoving(bool value, CellSlot originSlot)
+	public bool SetMoving(bool value, CellSlot originSlot)
 	{
+		bool bMoveStarted = false;
 		moveOriginSlot = originSlot;
 		if (bMoveable)
 		{
@@ -76,6 +77,7 @@ public class CombatCellMover : MonoBehaviour
 				bMoving = true;
 				transform.SetParent(moveFieldTransform);
 				transform.localScale = Vector3.one;
+				bMoveStarted = true;
 			}
 			else
 			{
@@ -84,5 +86,6 @@ public class CombatCellMover : MonoBehaviour
 				transform.localScale = Vector3.one;
 			}
 		}
+		return bMoveStarted;
 	}
 }

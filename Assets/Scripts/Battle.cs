@@ -62,7 +62,7 @@ public class Battle : MonoBehaviour
 
 	bool BothCharactersAlive()
 	{
-		bool result = ((playerHealth.GetHP() > 0) && (opponentHealth.GetHP() > 0));
+		bool result = !((playerHealth.GetHP() <= 0) || (opponentHealth.GetHP() <= 0));
 		return result;
 	}
 

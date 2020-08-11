@@ -26,7 +26,7 @@ public class PageBar : MonoBehaviour
 		allCGs.Add(battleCG);
 		libraryCG = library.GetComponent<CanvasGroup>();
 		allCGs.Add(libraryCG);
-		IsolateButton(battleButton);
+		BattlePage();
 	}
 
 	void SetCanvasGroupEnabled(CanvasGroup cg, bool value)

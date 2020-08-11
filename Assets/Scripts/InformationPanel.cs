@@ -7,7 +7,10 @@ public class InformationPanel : MonoBehaviour
 {
 	public Text nameText;
 	public Image cellImage;
+	public Text cellValueText;
 	public Text descriptionText;
+	public StatPanel damageStatPanel;
+	public StatPanel healthStatPanel;
 
 	private CellLibrary cellLibrary;
 	private BoardEditor boardEditor;
@@ -22,7 +25,11 @@ public class InformationPanel : MonoBehaviour
 	{
 		nameText.text = cd.cellName;
 		cellImage.sprite = cd.cellSprite;
+		cellValueText.text = cd.cellValue.ToString();
 		descriptionText.text = cd.description;
+		damageStatPanel.SetStatValue(cd.damage);
+		healthStatPanel.SetStatValue(cd.health);
+
 		boardEditor.UpdateHotCell(cd);
 	}
 

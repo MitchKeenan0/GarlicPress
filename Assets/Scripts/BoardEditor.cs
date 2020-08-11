@@ -5,19 +5,22 @@ using UnityEngine.UI;
 
 public class BoardEditor : MonoBehaviour
 {
-	public float maxCells = 5;
+	public int maxBoardValue = 9;
 	public Material slotMaterial;
 	public Material manipulationMaterial;
 	public CanvasGroup cancelButtonCanvasGroup;
 	public Text cellCountText;
+	public Transform removeCellPanel;
 
 	private List<CellSlot> slotList;
 	private List<CellData> cellDataList;
 	private CombatantBoard playerBoard;
 	private CellData hotCellData = null;
+	private CellSlot removingSlot = null;
 	private Game game;
+	private CanvasGroup removeCellCanvasGroup;
 	private bool bEditing = false;
-	private int numCells = 0;
+	private int boardValue = 0;
 
 	void Awake()
 	{
@@ -28,21 +31,23 @@ public class BoardEditor : MonoBehaviour
     void Start()
     {
 		playerBoard = GetComponentInChildren<CombatantBoard>();
+		removeCellCanvasGroup = removeCellPanel.GetComponent<CanvasGroup>();
 		EnableCancelButton(false);
+		EnableRemovePanel(false);
 		game = FindObjectOfType<Game>();
 		game.LoadGame();
     }
 
-	void UpdateCellCount()
+	void UpdateBoardValue()
 	{
-		int count = 0;
+		int totalCellValue = 0;
 		foreach(CellSlot cs in slotList)
 		{
 			if ((cs.GetCell() != null) && (cs.GetCell().GetCellData() != null))
-				count++;
+				totalCellValue += cs.GetCell().GetCellData().cellValue;
 		}
-		numCells = count;
-		cellCountText.text = "00" + numCells + "/" + "00" + maxCells;
+		boardValue = totalCellValue;
+		cellCountText.text = boardValue + "/" + maxBoardValue;
 	} 
 
 	public void EnableCancelButton(bool value)
@@ -50,6 +55,41 @@ public class BoardEditor : MonoBehaviour
 		cancelButtonCanvasGroup.alpha = value ? 1f : 0f;
 		cancelButtonCanvasGroup.blocksRaycasts = value;
 		cancelButtonCanvasGroup.interactable = value;
+	}
+
+	public void EnableRemovePanel(bool value)
+	{
+		removeCellCanvasGroup.alpha = value ? 1f : 0f;
+		removeCellCanvasGroup.blocksRaycasts = value;
+		removeCellCanvasGroup.interactable = value;
+	}
+
+	public void UpdateRemovingSlot(CellSlot value)
+	{
+		removingSlot = value;
+		removeCellPanel.transform.position = value.transform.position;
+		if ((value != null) && (hotCellData == null))
+			EnableRemovePanel(true);
+	}
+
+	public void RemoveCell()
+	{
+		if (removingSlot != null)
+		{
+			removingSlot.ClearCell(true);
+			removingSlot = null;
+			hotCellData = null;
+
+			UpdateBoardValue();
+			game.SaveGame();
+			EnableRemovePanel(false);
+		}
+	}
+
+	public void CancelRemoveCell()
+	{
+		removingSlot = null;
+		EnableRemovePanel(false);
 	}
 
 	public void LoadSlots()
@@ -72,7 +112,8 @@ public class BoardEditor : MonoBehaviour
 				}
 			}
 		}
-		UpdateCellCount();
+		maxBoardValue = slots.Length;
+		UpdateBoardValue();
 	}
 
     public void EnableSlotManipulation(bool value)
@@ -80,7 +121,7 @@ public class BoardEditor : MonoBehaviour
 		Material enabledMaterial = value ? manipulationMaterial : slotMaterial;
 		foreach (CellSlot cs in slotList)
 		{
-			if ((cs.GetCell() != null) && (numCells < maxCells))
+			if ((cs.GetCell() != null) && (boardValue < maxBoardValue))
 			{
 				cs.SetMaterial(enabledMaterial);
 				cs.SetBlinking(value);
@@ -107,10 +148,10 @@ public class BoardEditor : MonoBehaviour
 			int slotIndex = intoSlot.transform.GetSiblingIndex();
 			/// placed to empty slot...
 			if (((intoSlot.GetCell() != null) && (intoSlot.GetCell().GetCellData() == null)) 
-				|| (numCells < maxCells))
+				|| (boardValue < maxBoardValue))
 			{
 				CombatantCell combatCell = playerBoard.SpawnCombatCell(hotCellData, intoSlot);
-				intoSlot.LoadCell(combatCell);
+				intoSlot.LoadCell(combatCell, false);
 				if (cellDataList.Count > slotIndex)
 				{
 					cellDataList[slotIndex] = hotCellData;
@@ -130,14 +171,15 @@ public class BoardEditor : MonoBehaviour
 				/// or overwrite existing cell
 				CombatantCell existingCell = intoSlot.GetCell();
 				existingCell.LoadCellData(hotCellData);
-				intoSlot.LoadCell(existingCell);
+				intoSlot.LoadCell(existingCell, false);
 				if (cellDataList.Count > slotIndex)
 					cellDataList[slotIndex] = hotCellData;
 				else
 					cellDataList.Add(hotCellData);
 			}
+
 			hotCellData = null;
-			UpdateCellCount();
+			UpdateBoardValue();
 			game.SaveGame();
 		}
 	}
@@ -150,10 +192,9 @@ public class BoardEditor : MonoBehaviour
 	public void ClearBoard()
 	{
 		foreach (CellSlot cs in slotList)
-			cs.ClearCell();
+			cs.ClearCell(true);
 		UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
-		numCells = 0;
-		UpdateCellCount();
+		UpdateBoardValue();
 		game.SaveGame();
 	}
 }

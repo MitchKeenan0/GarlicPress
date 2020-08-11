@@ -24,13 +24,14 @@ public class BoardGenerator : MonoBehaviour
 		if (board == null)
 			board = GetComponent<CombatantBoard>();
 		int numBoardSlots = board.GetSlots().Count;
-		int cells = 0;
 
-		while (cells < cellCount)
+		int cells = 0;
+		int tries = 0;
+		while ((cells < cellCount) && (tries < 100))
 		{
-			foreach(CellSlot cs in board.GetSlots())
+			foreach (CellSlot cs in board.GetSlots())
 			{
-				if (cs.GetCell() == null)
+				if ((cs.GetCell() == null) || ((cs.GetCell() != null) && (cs.GetCell().GetCellData() != null)))
 				{
 					if ((Random.Range(0f, 1f) > 0.3f) && (cells < cellCount))
 					{
@@ -47,6 +48,7 @@ public class BoardGenerator : MonoBehaviour
 					}
 				}
 			}
+			tries++;
 		}
 
 		board.LoadBoard(cellList);

@@ -42,7 +42,7 @@ public class CombatantBoard : MonoBehaviour
 				if (cells[i] != null)
 				{
 					CombatantCell combatCell = SpawnCombatCell(cells[i], slotList[i]);
-					slotList[i].LoadCell(combatCell);
+					slotList[i].LoadCell(combatCell, false);
 				}
 			}
 		}
@@ -93,7 +93,7 @@ public class CombatantBoard : MonoBehaviour
 		CombatantCell cc = Instantiate(combatCellPrefab, parentSlot.transform);
 		cc.LoadCellData(cellData);
 		combatCellList.Add(cc);
-		parentSlot.LoadCell(cc);
+		parentSlot.LoadCell(cc, false);
 		return cc;
 	}
 

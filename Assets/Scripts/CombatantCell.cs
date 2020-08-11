@@ -31,6 +31,11 @@ public class CombatantCell : MonoBehaviour
 			health.InitHealth(cellData.health);
 			ShowCanvasGroup(true);
 		}
+		else
+		{
+			cellImage.sprite = null;
+			ShowCanvasGroup(false);
+		}
 	}
 
 	public void TakeDamage(int value)
@@ -49,7 +54,7 @@ public class CombatantCell : MonoBehaviour
 
 	void CellDied()
 	{
-		mySlot.ClearCell();
+		mySlot.ClearCell(true);
 		ShowCanvasGroup(false);
 		Destroy(gameObject, 0.5f);
 	}

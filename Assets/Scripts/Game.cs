@@ -53,6 +53,7 @@ public class Game : MonoBehaviour
 		{
 			List<CellSlot> boardSlots = new List<CellSlot>();
 			boardSlots = playerBoard.GetSlots();
+			int numLiveCells = 0;
 			for(int i = 0; i < boardSlots.Count; i++)
 			{
 				CellData cd = null;
@@ -65,6 +66,7 @@ public class Game : MonoBehaviour
 						playerCellIDs[i] = cd.saveID;
 					else
 						playerCellIDs.Add(cd.saveID);
+					numLiveCells++;
 				}
 				else
 				{
@@ -75,6 +77,7 @@ public class Game : MonoBehaviour
 				}
 			}
 		}
+		
 		save.playerCellIDs = playerCellIDs;
 		return save;
 	}
@@ -93,6 +96,7 @@ public class Game : MonoBehaviour
 
 			playerCells = new List<CellData>();
 			CellLibrary cellLibrary = FindObjectOfType<CellLibrary>();
+			int numLiveCells = 0;
 			for(int i = 0; i < save.playerCellIDs.Count; i++)
 			{
 				int cdID = save.playerCellIDs[i];
@@ -100,6 +104,7 @@ public class Game : MonoBehaviour
 				{
 					CellData IDCellData = cellLibrary.allCells[cdID];
 					playerCells.Add(IDCellData);
+					numLiveCells++;
 				}
 				else
 				{

@@ -34,10 +34,14 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		board = transform.parent.parent.GetComponent<CombatantBoard>();
     }
 
-	public void LoadCell(CombatantCell cc)
+	public void LoadCell(CombatantCell cc, bool bEraseCell)
 	{
 		if (cc == null)
+		{
+			if (bEraseCell && (combatCell != null))
+				combatCell.LoadCellData(null);
 			cellData = null;
+		}
 		combatCell = cc;
 		if (combatCell != null)
 			cellData = cc.GetCellData();
@@ -102,9 +106,9 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		ShowHighlight(false);
 	}
 
-	public void ClearCell()
+	public void ClearCell(bool bEraseCell)
 	{
-		LoadCell(null);
+		LoadCell(null, bEraseCell);
 		image.sprite = slotSprite;
 		image.color = slotColor;
 		ColorBlock cb = button.colors;
@@ -116,10 +120,20 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 	{
 		if ((combatCell != null) && (combatCell.GetCellData() != null))
 		{
-			RecordMovingCell(combatCell, combatCell.GetCellData());
-			combatCell.GetComponent<CombatCellMover>().SetMoving(true, this);
-			combatCell.ShowCanvasGroup(true);
-			LoadCell(null);
+			if (boardEditor != null)
+			{
+				boardEditor.UpdateRemovingSlot(this);
+			}
+			else
+			{
+				CombatCellMover cellMover = combatCell.GetComponent<CombatCellMover>();
+				if ((cellMover != null) && (cellMover.SetMoving(true, this)))
+				{
+					RecordMovingCell(combatCell, combatCell.GetCellData());
+					combatCell.ShowCanvasGroup(true);
+					LoadCell(null, false);
+				}
+			}
 		}
 	}
 
@@ -128,16 +142,18 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		if ((movingCell != null) && (movingCell.GetCellData() != null))
 		{
 			movingCell.LoadCellData(movingCell.GetCellData());
-			LoadCell(movingCell);
+			LoadCell(movingCell, false);
 			combatCell.GetComponent<CombatCellMover>().SetMoving(false, this);
 			combatCell.ShowCanvasGroup(true);
 			combatCell.GetComponent<CombatCellMover>().FinishMoveToSlot();
+			RecordMovingCell(null, null);
 		}
 	}
 
 	void RecordMovingCell(CombatantCell cc, CellData cd)
 	{
 		movingCell = cc;
-		movingCell.LoadCellData(cd);
+		if (movingCell != null)
+			movingCell.LoadCellData(cd);
 	}
 }

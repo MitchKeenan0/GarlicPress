@@ -47,6 +47,6 @@ MonoBehaviour:
   cellSprite: {fileID: 21300000, guid: 6fa612a72e01bda4cb06de7106d0d783, type: 3}
   damage: 1
   health: 1
-  description: this cell f_cks
+  description: A perfectly common warrior that works best in large numbers
   abilityArray: []
   saveID: 0
