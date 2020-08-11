@@ -54,7 +54,7 @@ public class PageBar : MonoBehaviour
 		{
 			if (button != bt)
 			{
-				SetButtonColorMultiplier(button, 0.5f);
+				SetButtonColorMultiplier(button, 0.6f);
 			}
 		}
 

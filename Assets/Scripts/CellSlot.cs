@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class CellSlot : MonoBehaviour
+public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
 	public CanvasGroup highlightCanvasGroup;
 	public ParticleSystem damageParticles;
@@ -16,10 +17,10 @@ public class CellSlot : MonoBehaviour
 	private Sprite slotSprite;
 	private Color slotColor;
 	private CombatantBoard board;
-	private CombatantCell combatCell;
+	private CombatantCell combatCell = null;
+	private CombatantCell movingCell = null;
 
-	public CellData GetCell() { return cellData; }
-	public void LoadCombatCell(CombatantCell cc) { combatCell = cc; }
+	public CombatantCell GetCell() { return combatCell; }
 
     void Awake()
     {
@@ -33,32 +34,27 @@ public class CellSlot : MonoBehaviour
 		board = transform.parent.parent.GetComponent<CombatantBoard>();
     }
 
-	public void LoadCell(CellData cd)
+	public void LoadCell(CombatantCell cc)
 	{
-		cellData = cd;
-		if (cellData != null)
-		{
-			image.sprite = cd.cellSprite;
-			image.color = Color.white;
-		}
+		if (cc == null)
+			cellData = null;
+		combatCell = cc;
+		if (combatCell != null)
+			cellData = cc.GetCellData();
 		else
-		{
-			ClearCell();
-		}
+			cellData = null;
 	}
 
 	public void TakeDamage(int value)
 	{
 		damageParticles.Play();
-		if (combatCell != null)
+		if ((combatCell != null) && (combatCell.GetCellData() != null))
 		{
 			combatCell.TakeDamage(value);
-			Debug.Log("hit cell");
 		}
 		else
 		{
 			board.TakeDamage(value);
-			Debug.Log("hit board");
 		}
 	}
 
@@ -74,8 +70,11 @@ public class CellSlot : MonoBehaviour
 
 	public void SelectSlot()
 	{
-		boardEditor.EnableSlotManipulation(false);
-		boardEditor.PlaceCell(this);
+		if (boardEditor != null)
+		{
+			boardEditor.EnableSlotManipulation(false);
+			boardEditor.PlaceCell(this);
+		}
 	}
 
 	public void SetBlinking(bool value)
@@ -105,8 +104,40 @@ public class CellSlot : MonoBehaviour
 
 	public void ClearCell()
 	{
-		cellData = null;
+		LoadCell(null);
 		image.sprite = slotSprite;
 		image.color = slotColor;
+		ColorBlock cb = button.colors;
+		cb.normalColor = slotColor;
+		button.colors = cb;
+	}
+
+	public void OnPointerDown(PointerEventData data)
+	{
+		if ((combatCell != null) && (combatCell.GetCellData() != null))
+		{
+			RecordMovingCell(combatCell, combatCell.GetCellData());
+			combatCell.GetComponent<CombatCellMover>().SetMoving(true, this);
+			combatCell.ShowCanvasGroup(true);
+			LoadCell(null);
+		}
+	}
+
+	public void OnPointerUp(PointerEventData data)
+	{
+		if ((movingCell != null) && (movingCell.GetCellData() != null))
+		{
+			movingCell.LoadCellData(movingCell.GetCellData());
+			LoadCell(movingCell);
+			combatCell.GetComponent<CombatCellMover>().SetMoving(false, this);
+			combatCell.ShowCanvasGroup(true);
+			combatCell.GetComponent<CombatCellMover>().FinishMoveToSlot();
+		}
+	}
+
+	void RecordMovingCell(CombatantCell cc, CellData cd)
+	{
+		movingCell = cc;
+		movingCell.LoadCellData(cd);
 	}
 }

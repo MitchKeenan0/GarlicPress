@@ -44,8 +44,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellName: Water
-  cellSprite: {fileID: 21300000, guid: 248e7ccb504a8c346a105cfdf2aa2606, type: 3}
+  cellSprite: {fileID: 21300000, guid: 6fa612a72e01bda4cb06de7106d0d783, type: 3}
   damage: 1
   health: 1
   description: this cell f_cks
   abilityArray: []
+  saveID: 0

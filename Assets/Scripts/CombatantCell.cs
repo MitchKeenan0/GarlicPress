@@ -7,19 +7,29 @@ public class CombatantCell : MonoBehaviour
 {
 	private Image cellImage;
 	private Health health;
+	private CellData cellData;
+	private CellSlot mySlot;
+	private CanvasGroup canvasGroup;
+
+	public CellData GetCellData() { return cellData; }
 
     void Awake()
     {
 		cellImage = GetComponent<Image>();
 		health = GetComponent<Health>();
-    }
+		canvasGroup = GetComponent<CanvasGroup>();
+		ShowCanvasGroup(false);
+		mySlot = transform.parent.GetComponent<CellSlot>();
+	}
 
-    public void LoadCell(CellData cd)
+    public void LoadCellData(CellData cd)
 	{
-		if (cd != null)
+		cellData = cd;
+		if (cellData != null)
 		{
-			cellImage.sprite = cd.cellSprite;
-			health.InitHealth(cd.health);
+			cellImage.sprite = cellData.cellSprite;
+			health.InitHealth(cellData.health);
+			ShowCanvasGroup(true);
 		}
 	}
 
@@ -30,13 +40,17 @@ public class CombatantCell : MonoBehaviour
 			CellDied();
 	}
 
+	public void ShowCanvasGroup(bool value)
+	{
+		canvasGroup.alpha = value ? 1f : 0f;
+		canvasGroup.interactable = value;
+		canvasGroup.blocksRaycasts = value;
+	}
+
 	void CellDied()
 	{
-		cellImage.color = Color.black;
-		CellSlot mySlot = transform.parent.GetComponent<CellSlot>();
-		mySlot.LoadCombatCell(null);
-		mySlot.LoadCell(null);
 		mySlot.ClearCell();
-		Destroy(gameObject, 0.2f);
+		ShowCanvasGroup(false);
+		Destroy(gameObject, 0.5f);
 	}
 }

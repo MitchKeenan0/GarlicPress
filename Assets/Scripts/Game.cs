@@ -32,7 +32,7 @@ public class Game : MonoBehaviour
 		bf.Serialize(file, save);
 		file.Close();
 
-		Debug.Log("Game Saved");
+		//Debug.Log("Game Saved");
 	}
 
 	private Save CreatePlayerBoardSave()
@@ -55,7 +55,9 @@ public class Game : MonoBehaviour
 			boardSlots = playerBoard.GetSlots();
 			for(int i = 0; i < boardSlots.Count; i++)
 			{
-				CellData cd = boardSlots[i].GetCell();
+				CellData cd = null;
+				if (boardSlots[i].GetCell() != null)
+					cd = boardSlots[i].GetCell().GetCellData();
 				if (cd != null)
 				{
 					playerCells.Add(cd);
@@ -89,6 +91,7 @@ public class Game : MonoBehaviour
 			Save save = (Save)bf.Deserialize(file);
 			file.Close();
 
+			playerCells = new List<CellData>();
 			CellLibrary cellLibrary = FindObjectOfType<CellLibrary>();
 			for(int i = 0; i < save.playerCellIDs.Count; i++)
 			{
@@ -106,12 +109,12 @@ public class Game : MonoBehaviour
 
 			playerBoard.LoadBoard(playerCells);
 
-			Debug.Log("Game Loaded");
+			//Debug.Log("Game Loaded");
 		}
-		else
-		{
-			Debug.Log("No game saved!");
-		}
+		//else
+		//{
+		//	Debug.Log("No game saved!");
+		//}
 	}
 
 	public virtual void DeleteSave()

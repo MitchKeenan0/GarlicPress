@@ -38,7 +38,7 @@ public class BoardEditor : MonoBehaviour
 		int count = 0;
 		foreach(CellSlot cs in slotList)
 		{
-			if (cs.GetCell() != null)
+			if ((cs.GetCell() != null) && (cs.GetCell().GetCellData() != null))
 				count++;
 		}
 		numCells = count;
@@ -61,7 +61,9 @@ public class BoardEditor : MonoBehaviour
 		{
 			if (!slotList.Contains(cs))
 				slotList.Add(cs);
-			CellData slotCellData = cs.GetCell();
+			CellData slotCellData = null;
+			if (cs.GetCell() != null)
+				slotCellData = cs.GetCell().GetCellData();
 			if (slotCellData != null)
 			{
 				if (!cellDataList.Contains(slotCellData))
@@ -78,7 +80,7 @@ public class BoardEditor : MonoBehaviour
 		Material enabledMaterial = value ? manipulationMaterial : slotMaterial;
 		foreach (CellSlot cs in slotList)
 		{
-			if ((cs.GetCell() != null) || (numCells < (maxCells - 1)))
+			if ((cs.GetCell() != null) && (numCells < maxCells))
 			{
 				cs.SetMaterial(enabledMaterial);
 				cs.SetBlinking(value);
@@ -104,9 +106,11 @@ public class BoardEditor : MonoBehaviour
 		{
 			int slotIndex = intoSlot.transform.GetSiblingIndex();
 			/// placed to empty slot...
-			if ((intoSlot.GetCell() == null) && (numCells < maxCells))
+			if (((intoSlot.GetCell() != null) && (intoSlot.GetCell().GetCellData() == null)) 
+				|| (numCells < maxCells))
 			{
-				intoSlot.LoadCell(hotCellData);
+				CombatantCell combatCell = playerBoard.SpawnCombatCell(hotCellData, intoSlot);
+				intoSlot.LoadCell(combatCell);
 				if (cellDataList.Count > slotIndex)
 				{
 					cellDataList[slotIndex] = hotCellData;
@@ -124,7 +128,9 @@ public class BoardEditor : MonoBehaviour
 			else if (intoSlot.GetCell() != null)
 			{
 				/// or overwrite existing cell
-				intoSlot.LoadCell(hotCellData);
+				CombatantCell existingCell = intoSlot.GetCell();
+				existingCell.LoadCellData(hotCellData);
+				intoSlot.LoadCell(existingCell);
 				if (cellDataList.Count > slotIndex)
 					cellDataList[slotIndex] = hotCellData;
 				else

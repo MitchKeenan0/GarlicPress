@@ -25,6 +25,7 @@ public class BoardGenerator : MonoBehaviour
 			board = GetComponent<CombatantBoard>();
 		int numBoardSlots = board.GetSlots().Count;
 		int cells = 0;
+
 		while (cells < cellCount)
 		{
 			foreach(CellSlot cs in board.GetSlots())
@@ -35,12 +36,14 @@ public class BoardGenerator : MonoBehaviour
 					{
 						int randomCell = Random.Range(0, numCellTypes);
 						CellData cellData = cellLibrary.allCells[randomCell];
-						cellList.Add(cellData);
+						if (cells < cellCount)
+							cellList.Add(cellData);
 						cells++;
 					}
 					else
 					{
-						cellList.Add(null);
+						if (cells < cellCount)
+							cellList.Add(null);
 					}
 				}
 			}

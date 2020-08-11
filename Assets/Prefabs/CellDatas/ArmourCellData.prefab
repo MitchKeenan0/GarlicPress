@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellName: Armour
-  cellSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  cellSprite: {fileID: 21300000, guid: 50addfe4e2c43ca458b90c6264e24a4b, type: 3}
   damage: 0
-  health: 2
+  health: 3
   description: protecc
   abilityArray: []
   saveID: 2

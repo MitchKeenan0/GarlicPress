@@ -21,7 +21,7 @@ public class Health : MonoBehaviour
 	public void InitHealth(int value)
 	{
 		maxHealth = value;
-		currentHealth = value;
+		currentHealth = maxHealth;
 	}
 
 	public virtual void TakeDamage(int damage)

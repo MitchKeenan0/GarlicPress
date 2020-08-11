@@ -50,3 +50,6 @@ TagManager:
   - name: Particles
     uniqueID: 4017686635
     locked: 0
+  - name: CellCombat
+    uniqueID: 246453097
+    locked: 0

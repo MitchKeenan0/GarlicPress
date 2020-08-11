@@ -57,9 +57,10 @@ public class BattleUI : MonoBehaviour
 		interactionToastList.Add(it);
 	}
 
-	public void GameOver()
+	public void GameOver(bool bPlayerWon)
 	{
 		SetGameOverCanvasGroup(true);
+		gameOverPanel.SetConclusionText(bPlayerWon);
 	}
 
 	void SetGameOverCanvasGroup(bool value)

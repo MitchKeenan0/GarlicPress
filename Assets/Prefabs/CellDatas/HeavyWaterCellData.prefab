@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellName: Heavy Water
-  cellSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  cellSprite: {fileID: 21300000, guid: c1325da2eaa329346a03218f9caa2ab3, type: 3}
   damage: 2
   health: 1
   description: sh_t's radioactive

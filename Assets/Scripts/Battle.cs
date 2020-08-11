@@ -46,9 +46,17 @@ public class Battle : MonoBehaviour
 
 		if (BothCharactersAlive())
 		{
-			/// next round
+			/// start next round
 			warmupCoroutine = Warmup();
 			StartCoroutine(warmupCoroutine);
+
+			/// grant move tokens
+			MoveCounter playerMoveCounter = playerBoard.GetComponentInChildren<MoveCounter>();
+			if (playerMoveCounter != null)
+				playerMoveCounter.AddMoveToken(1);
+			MoveCounter opponentMoveCounter = opponentBoard.GetComponentInChildren<MoveCounter>();
+			if (opponentMoveCounter != null)
+				opponentMoveCounter.AddMoveToken(1);
 		}
 	}
 
@@ -63,8 +71,12 @@ public class Battle : MonoBehaviour
 		cellSlotA.HighlightForDuration(0.5f);
 		cellSlotB.HighlightForDuration(0.5f);
 
-		CellData cellA = cellSlotA.GetCell();
-		CellData cellB = cellSlotB.GetCell();
+		CellData cellA = null;
+		if (cellSlotA.GetCell() != null)
+			cellA = cellSlotA.GetCell().GetCellData();
+		CellData cellB = null;
+		if (cellSlotB.GetCell() != null)
+			cellB = cellSlotB.GetCell().GetCellData();
 
 		if ((cellB != null) && (cellA == null))
 		{
@@ -92,14 +104,15 @@ public class Battle : MonoBehaviour
 			if (cellA.damage != 0)
 			{
 				battleUI.ToastInteraction(cellSlotB.transform.position, cellA.damage);
-				cellSlotB.TakeDamage(cellB.damage);
+				cellSlotB.TakeDamage(cellA.damage);
 			}
 		}
 
 		if (!BothCharactersAlive())
 		{
 			StopAllCoroutines();
-			battleUI.GameOver();
+			bool bPlayerWon = playerHealth.GetHP() > 0;
+			battleUI.GameOver(bPlayerWon);
 		}
 	}
 

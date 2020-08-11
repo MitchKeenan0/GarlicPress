@@ -11,11 +11,10 @@ public class CombatantBoard : MonoBehaviour
 	public RectTransform boardRect;
 	private GridLayoutGroup grid;
 	public CellSlot cellSlotPrefab;
-	public CellData firstCellPrefab;
-	public bool bLiveCells = false;
 	public CombatantCell combatCellPrefab;
 
 	private Health health;
+	private Camera cameraMain;
 	private float boardWidth = -1f;
 	private float boardHeight = -1f;
 	private List<CellSlot> slotList;
@@ -30,6 +29,7 @@ public class CombatantBoard : MonoBehaviour
 		cellList = new List<CellData>();
 		combatCellList = new List<CombatantCell>();
 		health = GetComponent<Health>();
+		cameraMain = Camera.main;
 		InitBoard();
     }
 
@@ -39,10 +39,18 @@ public class CombatantBoard : MonoBehaviour
 		{
 			for (int i = 0; i < cells.Count; i++)
 			{
-				slotList[i].LoadCell(cells[i]);
-				if (bLiveCells)
-					SpawnCombatCell(cells[i], slotList[i]);
+				if (cells[i] != null)
+				{
+					CombatantCell combatCell = SpawnCombatCell(cells[i], slotList[i]);
+					slotList[i].LoadCell(combatCell);
+				}
 			}
+		}
+
+		if (health != null)
+		{
+			int cellCount = GetComponentsInChildren<CombatantCell>().Length;
+			health.InitHealth(cellCount);
 		}
 
 		BoardEditor be = FindObjectOfType<BoardEditor>();
@@ -80,11 +88,33 @@ public class CombatantBoard : MonoBehaviour
 			bg.GenerateBoard();
 	}
 
-	void SpawnCombatCell(CellData cellData, CellSlot parentSlot)
+	public CombatantCell SpawnCombatCell(CellData cellData, CellSlot parentSlot)
 	{
 		CombatantCell cc = Instantiate(combatCellPrefab, parentSlot.transform);
-		cc.LoadCell(cellData);
+		cc.LoadCellData(cellData);
 		combatCellList.Add(cc);
-		parentSlot.LoadCombatCell(cc);
+		parentSlot.LoadCell(cc);
+		return cc;
+	}
+
+	public Transform GetClosestSlotTo(Vector3 position)
+	{
+		Transform slotTransform = null;
+		float closestDistance = 99999f;
+		foreach(CellSlot slot in slotList)
+		{
+			if ((slot.GetCell() == null) || ((slot.GetCell() != null && slot.GetCell().GetCellData() != null)))
+			{
+				Vector3 slotPosition = slot.transform.position;
+				slotPosition.z = 0;
+				float distToSlot = Vector3.Distance(position, slotPosition);
+				if (distToSlot < closestDistance)
+				{
+					closestDistance = distToSlot;
+					slotTransform = slot.transform;
+				}
+			}
+		}
+		return slotTransform;
 	}
 }
