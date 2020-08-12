@@ -11,6 +11,7 @@ public class InformationPanel : MonoBehaviour
 	public Text descriptionText;
 	public StatPanel damageStatPanel;
 	public StatPanel healthStatPanel;
+	public StatPanel armourStatPanel;
 
 	private CellLibrary cellLibrary;
 	private BoardEditor boardEditor;
@@ -29,6 +30,7 @@ public class InformationPanel : MonoBehaviour
 		descriptionText.text = cd.description;
 		damageStatPanel.SetStatValue(cd.damage);
 		healthStatPanel.SetStatValue(cd.health);
+		armourStatPanel.SetStatValue(cd.armour);
 
 		boardEditor.UpdateHotCell(cd);
 	}

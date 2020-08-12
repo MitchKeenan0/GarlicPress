@@ -39,7 +39,7 @@ public class CombatantBoard : MonoBehaviour
 		{
 			for (int i = 0; i < cells.Count; i++)
 			{
-				if (cells[i] != null)
+				if ((cells[i] != null) && (slotList.Count > i))
 				{
 					CombatantCell combatCell = SpawnCombatCell(cells[i], slotList[i]);
 					slotList[i].LoadCell(combatCell, false);

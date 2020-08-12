@@ -10,6 +10,7 @@ public class CombatantCell : MonoBehaviour
 	private CellData cellData;
 	private CellSlot mySlot;
 	private CanvasGroup canvasGroup;
+	private CellArsenal arsenal;
 
 	public CellData GetCellData() { return cellData; }
 
@@ -18,6 +19,7 @@ public class CombatantCell : MonoBehaviour
 		cellImage = GetComponent<Image>();
 		health = GetComponent<Health>();
 		canvasGroup = GetComponent<CanvasGroup>();
+		arsenal = GetComponent<CellArsenal>();
 		ShowCanvasGroup(false);
 		mySlot = transform.parent.GetComponent<CellSlot>();
 	}
@@ -40,7 +42,13 @@ public class CombatantCell : MonoBehaviour
 
 	public void TakeDamage(int value)
 	{
-		health.TakeDamage(value);
+		int finalDamage = value;
+		if ((cellData != null) && (cellData.armour != 0))
+		{
+			finalDamage -= cellData.armour;
+			arsenal.DefendCell();
+		}
+		health.TakeDamage(finalDamage);
 		if (health.GetHP() <= 0)
 			CellDied();
 	}

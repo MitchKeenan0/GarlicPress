@@ -72,40 +72,32 @@ public class Battle : MonoBehaviour
 		cellSlotB.HighlightForDuration(0.5f);
 
 		CellData cellA = null;
+		CombatantCell combatCellA = null;
 		if (cellSlotA.GetCell() != null)
-			cellA = cellSlotA.GetCell().GetCellData();
+		{
+			combatCellA = cellSlotA.GetCell();
+			cellA = combatCellA.GetCellData();
+		}
 		CellData cellB = null;
+		CombatantCell combatCellB = null;
 		if (cellSlotB.GetCell() != null)
-			cellB = cellSlotB.GetCell().GetCellData();
+		{
+			combatCellB = cellSlotB.GetCell();
+			cellB = combatCellB.GetCellData();
+		}
 
-		if ((cellB != null) && (cellA == null))
+		if ((cellA != null) && (cellA.damage > 0))
 		{
-			if (cellB.damage != 0)
-			{
-				battleUI.ToastInteraction(cellSlotA.transform.position, cellB.damage);
-				cellSlotA.TakeDamage(cellB.damage);
-			}
+			combatCellA.GetComponent<CellArsenal>().AttackCell(cellSlotB.transform);
+			battleUI.ToastInteraction(cellSlotB.transform.position, cellA.damage);
+			cellSlotB.TakeDamage(cellA.damage);
 		}
-		else if ((cellA != null) && (cellB == null))
+
+		if ((cellB != null) && (cellB.damage > 0))
 		{
-			if (cellA.damage != 0)
-			{
-				battleUI.ToastInteraction(cellSlotB.transform.position, cellA.damage);
-				cellSlotB.TakeDamage(cellA.damage);
-			}
-		}
-		else if ((cellA != null) && (cellB != null))
-		{
-			if (cellB.damage != 0)
-			{
-				battleUI.ToastInteraction(cellSlotA.transform.position, cellB.damage);
-				cellSlotA.TakeDamage(cellB.damage);
-			}
-			if (cellA.damage != 0)
-			{
-				battleUI.ToastInteraction(cellSlotB.transform.position, cellA.damage);
-				cellSlotB.TakeDamage(cellA.damage);
-			}
+			combatCellB.GetComponent<CellArsenal>().AttackCell(cellSlotA.transform);
+			battleUI.ToastInteraction(cellSlotA.transform.position, cellB.damage);
+			cellSlotA.TakeDamage(cellB.damage);
 		}
 
 		if (!BothCharactersAlive())

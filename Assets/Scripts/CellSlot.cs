@@ -7,7 +7,6 @@ using UnityEngine.EventSystems;
 public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
 	public CanvasGroup highlightCanvasGroup;
-	public ParticleSystem damageParticles;
 
 	private Image image;
 	private BoardEditor boardEditor;
@@ -51,7 +50,6 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
 	public void TakeDamage(int value)
 	{
-		damageParticles.Play();
 		if ((combatCell != null) && (combatCell.GetCellData() != null))
 		{
 			combatCell.TakeDamage(value);
