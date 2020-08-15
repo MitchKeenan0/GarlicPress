@@ -12,9 +12,18 @@ public class CombatantCell : MonoBehaviour
 	private CanvasGroup canvasGroup;
 	private CellArsenal arsenal;
 
-	public CellData GetCellData() { return cellData; }
+	private int m_Damage = 0;
+	private int m_Health = 0;
+	private int m_Armour = 0;
 
-    void Awake()
+	public CellData GetCellData() { return cellData; }
+	public int GetDamage() { return m_Damage; }
+	public int GetHealth() { return m_Health; }
+	public int GetArmour() { return m_Armour; }
+
+	public CellSlot GetSlot() { return mySlot; }
+
+	void Awake()
     {
 		cellImage = GetComponent<Image>();
 		health = GetComponent<Health>();
@@ -29,8 +38,11 @@ public class CombatantCell : MonoBehaviour
 		cellData = cd;
 		if (cellData != null)
 		{
+			m_Damage = cellData.damage;
+			m_Health = cellData.health;
+			m_Armour = cellData.armour;
+			health.InitHealth(m_Health);
 			cellImage.sprite = cellData.cellSprite;
-			health.InitHealth(cellData.health);
 			ShowCanvasGroup(true);
 		}
 		else
@@ -60,10 +72,36 @@ public class CombatantCell : MonoBehaviour
 		canvasGroup.blocksRaycasts = value;
 	}
 
+	//-- Stat affects
+	public virtual void ModifyDamage(int value)
+	{
+		m_Damage += value;
+	}
+
+	public virtual void ModifyHealth(int value)
+	{
+		m_Health += value;
+	}
+
+	public virtual void ModifyArmour(int value)
+	{
+		m_Armour += value;
+	}
+
 	void CellDied()
 	{
-		mySlot.ClearCell(true);
-		ShowCanvasGroup(false);
-		Destroy(gameObject, 0.5f);
+		if (cellData != null)
+		{
+			if (cellData.bOnCellDiedAbility)
+			{
+				cellData.OnCellDiedAbility(this);
+			}
+			else
+			{
+				mySlot.ClearCell(true);
+				ShowCanvasGroup(false);
+				Destroy(gameObject, 0.5f);
+			}
+		}
 	}
 }

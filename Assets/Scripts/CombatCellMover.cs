@@ -51,6 +51,13 @@ public class CombatCellMover : MonoBehaviour
 				transform.localScale = Vector3.one;
 				cellSlot = closestSlot.GetComponent<CellSlot>();
 				cellSlot.LoadCell(combatCell, false);
+
+				/// On Move Ability
+				if ((combatCell != null) && (combatCell.GetCellData() != null)
+					&& (combatCell.GetCellData().bOnMoveAbility))
+				{
+					combatCell.GetCellData().OnMoveAbility(cellSlot);
+				}
 			}
 
 			if (moveCounter != null)

@@ -11,4 +11,9 @@ public class CellAbility : MonoBehaviour
     {
         
     }
+
+	public virtual void FireAbility(CellSlot targetSlot)
+	{
+
+	}
 }

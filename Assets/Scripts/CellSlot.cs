@@ -154,4 +154,42 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		if (movingCell != null)
 			movingCell.LoadCellData(cd);
 	}
+
+	public List<CellSlot> GetNeighbors()
+	{
+		List<CellSlot> neighborSlots = new List<CellSlot>();
+		int myIndex = transform.GetSiblingIndex();
+		List<CellSlot> myBoardSlots = new List<CellSlot>();
+		myBoardSlots = board.GetSlots();
+
+		/// right
+		int rightIndex = myIndex + 1;
+		if ((myBoardSlots.Count > rightIndex) && (myBoardSlots[rightIndex] != null))
+		{
+			neighborSlots.Add(myBoardSlots[rightIndex]);
+		}
+
+		/// left
+		int leftIndex = myIndex - 1;
+		if ((leftIndex >= 0) && (myBoardSlots.Count > leftIndex) && (myBoardSlots[leftIndex] != null))
+		{
+			neighborSlots.Add(myBoardSlots[leftIndex]);
+		}
+
+		/// up
+		int upIndex = myIndex + board.width;
+		if ((myBoardSlots.Count > upIndex) && (myBoardSlots[upIndex] != null))
+		{
+			neighborSlots.Add(myBoardSlots[upIndex]);
+		}
+
+		/// down
+		int downIndex = myIndex - board.width;
+		if ((downIndex >= 0) && (myBoardSlots.Count > downIndex) && (myBoardSlots[downIndex] != null))
+		{
+			neighborSlots.Add(myBoardSlots[downIndex]);
+		}
+
+		return neighborSlots;
+	}
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
 	public int maxHealth = 5;
+	public int initScalar = 1;
 
 	private HealthUI healthUI;
 	private int currentHealth = 0;
@@ -20,7 +21,8 @@ public class Health : MonoBehaviour
 
 	public void InitHealth(int value)
 	{
-		maxHealth = value;
+		maxHealth = value * initScalar;
+		maxHealth = Mathf.Clamp(maxHealth, 0, 99);
 		currentHealth = maxHealth;
 	}
 

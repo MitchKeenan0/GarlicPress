@@ -1082,7 +1082,7 @@ MonoBehaviour:
   optionPrefab: {fileID: 0}
   allCells:
   - {fileID: 7870423558041477812, guid: 396171b7b9b896640a2252cc3e9dfd63, type: 3}
-  - {fileID: 5000915663838752403, guid: b2f83e95701f50b49b68a0e37fff1317, type: 3}
+  - {fileID: 7102776152364902914, guid: b2f83e95701f50b49b68a0e37fff1317, type: 3}
   - {fileID: 2406604443425190056, guid: 3812eb7f189ff864797c99924eba937f, type: 3}
 --- !u!114 &1157298555
 MonoBehaviour:
@@ -1098,7 +1098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   warmupCanvasGroup: {fileID: 876800439}
   warmupTime: 1
-  cellResolveTime: 0.6
+  cellResolveTime: 0.8
 --- !u!1 &1182733271
 GameObject:
   m_ObjectHideFlags: 0
@@ -1962,7 +1962,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2fa1925ebd6c9b4a81888372a1aa2f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 100
+  initScalar: 10
 --- !u!222 &1643231029
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2337,7 +2338,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2fa1925ebd6c9b4a81888372a1aa2f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 100
+  initScalar: 10
 --- !u!222 &2038763823
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -49,7 +49,7 @@ public class CombatantBoard : MonoBehaviour
 
 		if (health != null)
 		{
-			int cellCount = GetComponentsInChildren<CombatantCell>().Length;
+			int cellCount = slotList.Count;
 			health.InitHealth(cellCount);
 		}
 
@@ -116,5 +116,16 @@ public class CombatantBoard : MonoBehaviour
 			}
 		}
 		return slotTransform;
+	}
+
+	public int GetNumCells()
+	{
+		int result = 0;
+		foreach (CellSlot cs in slotList)
+		{
+			if ((cs.GetCell() != null) && (cs.GetCell().GetCellData() != null))
+				result++;
+		}
+		return result;
 	}
 }
