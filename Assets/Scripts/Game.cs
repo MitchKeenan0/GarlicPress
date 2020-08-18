@@ -13,6 +13,7 @@ public class Game : MonoBehaviour
     void Start()
     {
 		playerCells = new List<CellData>();
+		Time.timeScale = 1f;
 		//DeleteSave();
 	}
 

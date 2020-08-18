@@ -121,7 +121,7 @@ public class BoardEditor : MonoBehaviour
 		Material enabledMaterial = value ? manipulationMaterial : slotMaterial;
 		foreach (CellSlot cs in slotList)
 		{
-			if ((cs.GetCell() != null) && (boardValue < maxBoardValue))
+			if (((cs.GetCell() == null) || (cs.GetCell() != null) && (cs.GetCell().GetCellData() != null)) && (boardValue < maxBoardValue))
 			{
 				cs.SetMaterial(enabledMaterial);
 				cs.SetBlinking(value);
@@ -143,6 +143,7 @@ public class BoardEditor : MonoBehaviour
 
 	public void PlaceCell(CellSlot intoSlot)
 	{
+		Debug.Log("Placing Cell");
 		if (bEditing && (hotCellData != null))
 		{
 			int slotIndex = intoSlot.transform.GetSiblingIndex();
@@ -179,8 +180,13 @@ public class BoardEditor : MonoBehaviour
 			}
 
 			hotCellData = null;
+			bEditing = false;
 			UpdateBoardValue();
 			game.SaveGame();
+		}
+		else
+		{
+			Debug.Log("place bounced");
 		}
 	}
 
@@ -191,8 +197,18 @@ public class BoardEditor : MonoBehaviour
 
 	public void ClearBoard()
 	{
+		if (removingSlot != null)
+		{
+			removingSlot.ClearCell(true);
+			removingSlot = null;
+		}
+
+		if (hotCellData != null)
+			UpdateHotCell(null);
+
 		foreach (CellSlot cs in slotList)
 			cs.ClearCell(true);
+
 		UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
 		UpdateBoardValue();
 		game.SaveGame();

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2406604443425190058
+--- !u!1 &7870423558041477814
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2406604443425190059}
-  - component: {fileID: 2406604443425190056}
+  - component: {fileID: 7870423558041477815}
+  - component: {fileID: -4530358797734023220}
   m_Layer: 0
-  m_Name: ArmourCellData
+  m_Name: SoapCellData
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2406604443425190059
+--- !u!4 &7870423558041477815
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2406604443425190058}
+  m_GameObject: {fileID: 7870423558041477814}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,27 +31,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2406604443425190056
+--- !u!114 &-4530358797734023220
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2406604443425190058}
+  m_GameObject: {fileID: 7870423558041477814}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1562bae2611ea434aa035c9fcfb27197, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c023dd3be1864a47a5cb7479024fbbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellName: Armour
-  cellSprite: {fileID: 21300000, guid: 50addfe4e2c43ca458b90c6264e24a4b, type: 3}
-  damage: 5
-  health: 20
-  armour: 5
+  cellName: Soap
+  cellSprite: {fileID: 21300000, guid: c0fdcc958ff79fa4291b345d19f82a3a, type: 3}
+  damage: 1
+  health: 1
+  armour: 3
   cellValue: 1
-  description: Sustain protection against massive attacks
+  description: This cell has 2 60% chances to create a copy when eliminated
   bAttackAbility: 0
   bRoundEndAbility: 0
   bOnMoveAbility: 0
-  bOnCellDiedAbility: 0
-  saveID: 2
+  bOnCellDiedAbility: 1
+  saveID: 4
+  potentialFragmentsOnCellDied: 2
+  fragmentDropRate: 0.6

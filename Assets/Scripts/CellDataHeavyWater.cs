@@ -26,16 +26,7 @@ public class CellDataHeavyWater : CellData
 			{
 				myCombatCell.LoadCellData(waterCellData);
 				mySlot.LoadCell(myCombatCell, false);
-				Debug.Log("water cell replaced :)");
 			}
-			else
-			{
-				Debug.Log("no cell slot");
-			}
-		}
-		else
-		{
-			Debug.Log("no combat cell");
 		}
 	}
 }

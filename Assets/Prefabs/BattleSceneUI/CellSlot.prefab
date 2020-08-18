@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -98,9 +98,9 @@ GameObject:
   - component: {fileID: 2580059171420725670}
   - component: {fileID: 2580059171420725669}
   - component: {fileID: 2580059171420725668}
-  - component: {fileID: 2580059171420725671}
   - component: {fileID: 7079176489637802128}
   - component: {fileID: 5364810210908153828}
+  - component: {fileID: 2580059171420725671}
   m_Layer: 5
   m_Name: CellSlot
   m_TagString: Untagged
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -166,6 +166,34 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &7079176489637802128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2580059171420725665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9ad0c3516f5e9849bcc8fd01f291b54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightCanvasGroup: {fileID: 220857155805221556}
+--- !u!114 &5364810210908153828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2580059171420725665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b86857a04f0b13d44aef176e995afd60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FadeDuration: 0.8
+  Color1: {r: 0, g: 0, b: 0, a: 1}
+  Color2: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
 --- !u!114 &2580059171420725671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,10 +215,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.9607844, g: 0.9607844, b: 0.9607844, a: 1}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_DisabledColor: {r: 0.056470603, g: 0, b: 0.6509434, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -222,35 +250,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &7079176489637802128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2580059171420725665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9ad0c3516f5e9849bcc8fd01f291b54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  highlightCanvasGroup: {fileID: 220857155805221556}
-  damageParticles: {fileID: 518909224729851945}
---- !u!114 &5364810210908153828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2580059171420725665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b86857a04f0b13d44aef176e995afd60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FadeDuration: 0.8
-  Color1: {r: 0, g: 0, b: 0, a: 1}
-  Color2: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
 --- !u!1001 &7068472950578116536
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -373,12 +372,6 @@ PrefabInstance:
 --- !u!224 &8992867104153919709 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2221776886815102821, guid: 818188ef2d2a1ad47ae876724aba6d7b,
-    type: 3}
-  m_PrefabInstance: {fileID: 7068472950578116536}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &518909224729851945 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 7290144182932885393, guid: 818188ef2d2a1ad47ae876724aba6d7b,
     type: 3}
   m_PrefabInstance: {fileID: 7068472950578116536}
   m_PrefabAsset: {fileID: 0}

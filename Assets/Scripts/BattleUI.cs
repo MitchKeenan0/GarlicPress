@@ -7,6 +7,8 @@ public class BattleUI : MonoBehaviour
 {
 	public GameOverPanel gameOverPanel;
 	public InteractionToast interactionTextPrefab;
+	public Sprite[] interactionSpriteArray;
+	public Color[] interactionColorArray;
 	public int toastPoolStartSize = 3;
 
 	private CanvasGroup gameOverPanelCanvasGroup;
@@ -23,15 +25,18 @@ public class BattleUI : MonoBehaviour
 		}
     }
 
-	public void ToastInteraction(Vector3 screenPosition, float value)
+	/// interaction types	0-damage	1-modifyStats
+	public void ToastInteraction(Vector3 screenPosition, float value, int interactionType, string prefix)
 	{
 		InteractionToast toast = GetInteractionToast();
 		if (toast == null)
 		{
-			SpawnInteractionToast();
-			toast = GetInteractionToast();
+			toast = SpawnInteractionToast();
 		}
-		toast.SetInteractionDetails(null, value.ToString("F0"));
+
+		Sprite interationSprite = interactionSpriteArray[interactionType];
+		Color interactionColor = interactionColorArray[interactionType];
+		toast.SetInteractionDetails(interationSprite, prefix + value.ToString("F0"), interactionColor);
 		toast.transform.position = screenPosition;
 		toast.SetToastActive(true);
 	}
@@ -50,17 +55,19 @@ public class BattleUI : MonoBehaviour
 		return it;
 	}
 
-	void SpawnInteractionToast()
+	InteractionToast SpawnInteractionToast()
 	{
 		InteractionToast it = Instantiate(interactionTextPrefab, transform);
 		it.SetToastActive(false);
 		interactionToastList.Add(it);
+		return it;
 	}
 
 	public void GameOver(bool bPlayerWon)
 	{
 		SetGameOverCanvasGroup(true);
 		gameOverPanel.SetConclusionText(bPlayerWon);
+		Time.timeScale = 0.2f;
 	}
 
 	void SetGameOverCanvasGroup(bool value)

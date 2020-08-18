@@ -43,27 +43,43 @@ public class CombatCellMover : MonoBehaviour
 		CombatantBoard myBoard = parentRectTransform.parent.GetComponentInParent<CombatantBoard>();
 		if (myBoard != null)
 		{
-			Transform closestSlot = myBoard.GetClosestSlotTo(transform.position);
-			if (closestSlot != null)
+			bool bGoodMove = false;
+			Transform closestTransform = myBoard.GetClosestSlotTo(transform.position);
+			if (closestTransform != null)
 			{
-				transform.SetParent(closestSlot);
-				transform.localPosition = Vector3.zero;
-				transform.localScale = Vector3.one;
-				cellSlot = closestSlot.GetComponent<CellSlot>();
-				cellSlot.LoadCell(combatCell, false);
-
-				/// On Move Ability
-				if ((combatCell != null) && (combatCell.GetCellData() != null)
-					&& (combatCell.GetCellData().bOnMoveAbility))
+				CellSlot closestSlot = closestTransform.GetComponent<CellSlot>();
+				if (closestSlot != cellSlot)
 				{
-					combatCell.GetCellData().OnMoveAbility(cellSlot);
+					transform.SetParent(closestTransform);
+					transform.localPosition = Vector3.zero;
+					transform.localScale = Vector3.one;
+
+					cellSlot.LoadCell(combatCell, false);
+					bGoodMove = true;
+
+					/// On Move Ability
+					if ((combatCell != null) && (combatCell.GetCellData() != null)
+						&& (combatCell.GetCellData().bOnMoveAbility))
+					{
+						combatCell.GetCellData().OnMoveAbility(cellSlot);
+					}
+				}
+				else
+				{
+					/// move ended up at origin
+					transform.SetParent(cellSlot.transform);
+					transform.localPosition = Vector3.zero;
+					transform.localScale = Vector3.one;
 				}
 			}
 
-			if (moveCounter != null)
-				moveCounter.SpendMoveToken(1);
+			if (bGoodMove)
+			{
+				if (moveCounter != null)
+					moveCounter.SpendMoveToken(1);
 
-			moveOriginSlot.ClearCell(false);
+				moveOriginSlot.ClearCell(false);
+			}
 		}
 	}
 

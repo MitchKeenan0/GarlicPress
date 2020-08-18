@@ -7,13 +7,17 @@ using UnityEngine.EventSystems;
 public class CellOption : MonoBehaviour
 {
 	private Image cellImage;
+	private Text cellValueText;
 	private CellLibrary cellLibrary;
 	private CellData cellData;
+
+	public CellData GetCellData() { return cellData; }
 
     void Awake()
     {
 		cellLibrary = FindObjectOfType<CellLibrary>();
 		cellImage = GetComponent<Image>();
+		cellValueText = GetComponentInChildren<Text>();
     }
 
 	public void LoadCell(CellData cd)
@@ -22,6 +26,9 @@ public class CellOption : MonoBehaviour
 		if (cellImage == null)
 			cellImage = GetComponent<Image>();
 		cellImage.sprite = cd.cellSprite;
+		if (cellValueText == null)
+			cellValueText = GetComponentInChildren<Text>();
+		cellValueText.text = cd.cellValue.ToString();
 	}
 
 	public void CellSelected()

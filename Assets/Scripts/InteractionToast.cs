@@ -19,15 +19,16 @@ public class InteractionToast : MonoBehaviour
 		canvasGroup = GetComponent<CanvasGroup>();
     }
 
-    public void SetInteractionDetails(Sprite sprite, string value)
+    public void SetInteractionDetails(Sprite sprite, string value, Color col)
 	{
 		interactionImage.sprite = sprite;
+		interactionImage.color = col;
 		interactionText.text = value;
+		interactionText.color = col;
 	}
 
 	public void SetToastActive(bool value)
 	{
-		bActive = value;
 		if (canvasGroup == null)
 			canvasGroup = GetComponent<CanvasGroup>();
 		canvasGroup.alpha = value ? 1f : 0f;
@@ -36,10 +37,7 @@ public class InteractionToast : MonoBehaviour
 			durationCoroutine = Duration();
 			StartCoroutine(durationCoroutine);
 		}
-		else
-		{
-			StopAllCoroutines();
-		}
+		bActive = value;
 	}
 
 	private IEnumerator Duration()

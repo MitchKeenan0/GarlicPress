@@ -77,10 +77,16 @@ public class CombatantCell : MonoBehaviour
 	{
 		m_Damage += value;
 	}
+	public void SetDamage(int value) { m_Damage = value; Debug.Log("set damage " + value); }
 
 	public virtual void ModifyHealth(int value)
 	{
 		m_Health += value;
+	}
+	public void SetHealth(int value)
+	{
+		m_Health = value;
+		health.InitHealth(m_Health);
 	}
 
 	public virtual void ModifyArmour(int value)
@@ -88,7 +94,7 @@ public class CombatantCell : MonoBehaviour
 		m_Armour += value;
 	}
 
-	void CellDied()
+	public void CellDied()
 	{
 		if (cellData != null)
 		{

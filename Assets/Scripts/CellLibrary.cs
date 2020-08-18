@@ -14,11 +14,15 @@ public class CellLibrary : MonoBehaviour
 	private CanvasGroup informationCanvasGroup;
 	private InformationPanel informationPanel;
 	private BoardEditor boardEditor;
+	private LibraryOptionSort optionSort;
+	private List<CellOption> cellOptionList;
 
 	void Start()
     {
 		if (FindObjectOfType<BoardEditor>() != null)
 		{
+			cellOptionList = new List<CellOption>();
+			optionSort = GetComponent<LibraryOptionSort>();
 			libraryCanvasGroup = libraryTransform.GetComponent<CanvasGroup>();
 			informationCanvasGroup = informationTransform.GetComponent<CanvasGroup>();
 			informationPanel = GetComponentInChildren<InformationPanel>();
@@ -33,7 +37,23 @@ public class CellLibrary : MonoBehaviour
 				{
 					CellData cellData = allCells[i];
 					cellOption.LoadCell(cellData);
+					cellOptionList.Add(cellOption);
 				}
+			}
+
+			/// sort options by cell value
+			if (optionSort != null)
+			{
+				List<CellOption> sortedOptionList = new List<CellOption>();
+				sortedOptionList = optionSort.GetSortedList(cellOptionList);
+
+				foreach (CellOption co in cellOptionList)
+					co.transform.SetParent(null);
+
+				foreach (CellOption sortedOption in sortedOptionList)
+					sortedOption.transform.SetParent(libraryTransform);
+
+				cellOptionList = sortedOptionList;
 			}
 		}
     }

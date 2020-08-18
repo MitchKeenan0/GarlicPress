@@ -20,6 +20,7 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 	private CombatantCell movingCell = null;
 
 	public CombatantCell GetCell() { return combatCell; }
+	public CombatantBoard GetBoard() { return board; }
 
     void Awake()
     {
@@ -31,6 +32,7 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		slotColor = image.color;
 		ShowHighlight(false);
 		board = transform.parent.parent.GetComponent<CombatantBoard>();
+		SetInteractible(false);
     }
 
 	public void LoadCell(CombatantCell cc, bool bEraseCell)
@@ -41,11 +43,13 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 				combatCell.LoadCellData(null);
 			cellData = null;
 		}
-		combatCell = cc;
-		if (combatCell != null)
+
+		if (cc != null)
 			cellData = cc.GetCellData();
 		else
 			cellData = null;
+
+		combatCell = cc;
 	}
 
 	public void TakeDamage(int value)
@@ -63,6 +67,7 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 	public void SetInteractible(bool value)
 	{
 		button.interactable = value;
+		image.color = value ? Color.white : Color.black;
 	}
 
 	public void SetMaterial(Material value)
@@ -108,29 +113,26 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 	{
 		LoadCell(null, bEraseCell);
 		image.sprite = slotSprite;
-		image.color = slotColor;
-		ColorBlock cb = button.colors;
-		cb.normalColor = slotColor;
-		button.colors = cb;
+		//image.color = slotColor;
+		//ColorBlock cb = button.colors;
+		//cb.normalColor = slotColor;
+		//button.colors = cb;
 	}
 
 	public void OnPointerDown(PointerEventData data)
 	{
-		if ((combatCell != null) && (combatCell.GetCellData() != null))
+		if (boardEditor != null)
 		{
-			if (boardEditor != null)
+			boardEditor.UpdateRemovingSlot(this);
+		}
+		else if ((combatCell != null) && (combatCell.GetCellData() != null))
+		{
+			CombatCellMover cellMover = combatCell.GetComponent<CombatCellMover>();
+			if ((cellMover != null) && (cellMover.SetMoving(true, this)))
 			{
-				boardEditor.UpdateRemovingSlot(this);
-			}
-			else
-			{
-				CombatCellMover cellMover = combatCell.GetComponent<CombatCellMover>();
-				if ((cellMover != null) && (cellMover.SetMoving(true, this)))
-				{
-					RecordMovingCell(combatCell, combatCell.GetCellData());
-					combatCell.ShowCanvasGroup(true);
-					LoadCell(null, false);
-				}
+				RecordMovingCell(combatCell, combatCell.GetCellData());
+				combatCell.ShowCanvasGroup(true);
+				LoadCell(null, false);
 			}
 		}
 	}

@@ -33,6 +33,16 @@ public class Battle : MonoBehaviour
 		StartCoroutine(warmupCoroutine);
 	}
 
+	public void TestBattleOver()
+	{
+		if (!BothCharactersAlive())
+		{
+			StopAllCoroutines();
+			bool bPlayerWon = (playerHealth.GetHP() >= 1) && (playerBoard.GetNumCells() > 0);
+			battleUI.GameOver(bPlayerWon);
+		}
+	}
+
 	private IEnumerator ResolveCells()
 	{
 		int cellCount = playerBoard.GetSlots().Count;
@@ -105,9 +115,7 @@ public class Battle : MonoBehaviour
 			int cellADamage = combatCellA.GetDamage();
 			if (cellADamage > 0)
 			{
-				combatCellA.GetComponent<CellArsenal>().AttackCell(cellSlotB.transform);
-				battleUI.ToastInteraction(cellSlotB.transform.position, cellADamage);
-				cellSlotB.TakeDamage(cellADamage);
+				combatCellA.GetComponent<CellArsenal>().AttackCell(cellSlotA.transform, cellSlotB.transform, cellADamage);
 			}
 
 			if (cellA.bAttackAbility)
@@ -119,20 +127,11 @@ public class Battle : MonoBehaviour
 			int cellBDamage = combatCellB.GetDamage();
 			if (cellBDamage > 0)
 			{
-				combatCellB.GetComponent<CellArsenal>().AttackCell(cellSlotA.transform);
-				battleUI.ToastInteraction(cellSlotA.transform.position, cellBDamage);
-				cellSlotA.TakeDamage(cellBDamage);
+				combatCellB.GetComponent<CellArsenal>().AttackCell(cellSlotB.transform, cellSlotA.transform, cellBDamage);
 			}
 
 			if (cellB.bAttackAbility)
 				cellB.AttackAbility(cellSlotA);
-		}
-
-		if (!BothCharactersAlive())
-		{
-			StopAllCoroutines();
-			bool bPlayerWon = (playerHealth.GetHP() >= 1) && (playerBoard.GetNumCells() > 0);
-			battleUI.GameOver(bPlayerWon);
 		}
 	}
 
