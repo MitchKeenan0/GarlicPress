@@ -54,8 +54,17 @@ public class CombatCellMover : MonoBehaviour
 					transform.localPosition = Vector3.zero;
 					transform.localScale = Vector3.one;
 
-					cellSlot.LoadCell(combatCell, false);
+					if ((moveOriginSlot != null) && (moveOriginSlot.GetCell() != null))
+					{
+						CellData cellData = moveOriginSlot.GetCell().GetCellData();
+						if (cellData != null)
+							combatCell.LoadCellData(cellData);
+					}
+
+					closestSlot.LoadCell(combatCell, false);
 					bGoodMove = true;
+					cellSlot = closestSlot;
+					combatCell.SetSlot(cellSlot);
 
 					/// On Move Ability
 					if ((combatCell != null) && (combatCell.GetCellData() != null)
@@ -92,7 +101,6 @@ public class CombatCellMover : MonoBehaviour
 	public bool SetMoving(bool value, CellSlot originSlot)
 	{
 		bool bMoveStarted = false;
-		moveOriginSlot = originSlot;
 		if (bMoveable)
 		{
 			if (value)
@@ -101,6 +109,7 @@ public class CombatCellMover : MonoBehaviour
 				transform.SetParent(moveFieldTransform);
 				transform.localScale = Vector3.one;
 				bMoveStarted = true;
+				moveOriginSlot = originSlot;
 			}
 			else
 			{

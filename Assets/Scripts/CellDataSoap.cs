@@ -11,7 +11,8 @@ public class CellDataSoap : CellData
 
     void Start()
     {
-        
+		bOnCellDiedAbility = true;
+		numFragmentsDropped = 0;
     }
 
 	public override void OnCellDiedAbility(CombatantCell myCell)
@@ -24,11 +25,15 @@ public class CellDataSoap : CellData
 			if (cellSlot != null)
 			{
 				List<CellSlot> neighborSlots = new List<CellSlot>();
-				neighborSlots = cellSlot.GetNeighbors();
-				foreach(CellSlot cs in neighborSlots)
+				neighborSlots = cellSlot.GetNeighborSlots();
+				numFragmentsDropped = 0;
+
+				foreach (CellSlot cs in neighborSlots)
 				{
-					if ((cs.GetCell() == null) 
-						&& (Random.Range(0f, 1f) >= fragmentDropRate))
+					float randomFragmentShot = Random.Range(0f, 1f);
+
+					if (((cs.GetCell() == null) || ((cs.GetCell() != null) && (cs.GetCell().GetCellData() == null)))
+						&& (randomFragmentShot <= fragmentDropRate))
 					{
 						CombatantBoard board = cs.GetBoard();
 						board.SpawnCombatCell(this, cs);
@@ -40,8 +45,8 @@ public class CellDataSoap : CellData
 				}
 			}
 
-			bOnCellDiedAbility = false;
-			myCell.CellDied();
+			myCell.ShowCanvasGroup(false);
+			Destroy(myCell, 0.5f);
 		}
 	}
 }

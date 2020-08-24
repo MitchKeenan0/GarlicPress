@@ -119,9 +119,23 @@ public class BoardEditor : MonoBehaviour
     public void EnableSlotManipulation(bool value)
 	{
 		Material enabledMaterial = value ? manipulationMaterial : slotMaterial;
+
 		foreach (CellSlot cs in slotList)
 		{
-			if (((cs.GetCell() == null) || (cs.GetCell() != null) && (cs.GetCell().GetCellData() != null)) && (boardValue < maxBoardValue))
+			/// enable empty cells if we can afford it
+			int hotCellValue = hotCellData.cellValue;
+			bool bEmptie = (cs.GetCell() == null) && ((boardValue + hotCellValue) <= maxBoardValue);
+
+			/// or replace occupied cells
+			bool bOccupie = (cs.GetCell() != null) && (cs.GetCell().GetCellData() != null);
+			if (bOccupie)
+			{
+				int occupiedCellValue = cs.GetCell().GetCellData().cellValue;
+				if ((boardValue + hotCellValue - occupiedCellValue) > maxBoardValue)
+					bOccupie = false;
+			}
+
+			if (bEmptie || bOccupie)
 			{
 				cs.SetMaterial(enabledMaterial);
 				cs.SetBlinking(value);
@@ -146,10 +160,12 @@ public class BoardEditor : MonoBehaviour
 		Debug.Log("Placing Cell");
 		if (bEditing && (hotCellData != null))
 		{
+			Debug.Log("editing...");
 			int slotIndex = intoSlot.transform.GetSiblingIndex();
+			
 			/// placed to empty slot...
-			if (((intoSlot.GetCell() != null) && (intoSlot.GetCell().GetCellData() == null)) 
-				|| (boardValue < maxBoardValue))
+			if (((intoSlot.GetCell() == null) || ((intoSlot.GetCell() != null) && (intoSlot.GetCell().GetCellData() == null)))
+				&& ((boardValue + hotCellData.cellValue) <= maxBoardValue))
 			{
 				CombatantCell combatCell = playerBoard.SpawnCombatCell(hotCellData, intoSlot);
 				intoSlot.LoadCell(combatCell, false);
@@ -166,6 +182,8 @@ public class BoardEditor : MonoBehaviour
 					}
 					cellDataList[slotIndex] = hotCellData;
 				}
+
+				Debug.Log("loaded cell from empty");
 			}
 			else if (intoSlot.GetCell() != null)
 			{
@@ -177,6 +195,8 @@ public class BoardEditor : MonoBehaviour
 					cellDataList[slotIndex] = hotCellData;
 				else
 					cellDataList.Add(hotCellData);
+
+				Debug.Log("overwrite cell");
 			}
 
 			hotCellData = null;

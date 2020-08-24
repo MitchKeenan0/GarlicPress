@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class CombatantBoard : MonoBehaviour
 {
-	public int width = 3;
-	public int height = 3;
+	public int boardColumnCount = 3;
+	public int boardRowCount = 3;
 	public int startingCellCount = 5;
 	public RectTransform boardRect;
 	private GridLayoutGroup grid;
@@ -67,12 +67,12 @@ public class CombatantBoard : MonoBehaviour
 	{
 		grid = boardRect.GetComponent<GridLayoutGroup>();
 		grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-		grid.constraintCount = width;
+		grid.constraintCount = boardColumnCount;
 
 		boardWidth = boardRect.sizeDelta.x;
 		boardHeight = boardRect.sizeDelta.y;
 
-		int numCells = width * height;
+		int numCells = boardColumnCount * boardRowCount;
 		for(int i = 0; i < numCells; i++)
 		{
 			CellSlot cellSlot = Instantiate(cellSlotPrefab, boardRect);

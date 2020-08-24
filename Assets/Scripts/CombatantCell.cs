@@ -22,6 +22,7 @@ public class CombatantCell : MonoBehaviour
 	public int GetArmour() { return m_Armour; }
 
 	public CellSlot GetSlot() { return mySlot; }
+	public void SetSlot(CellSlot value) { mySlot = value; }
 
 	void Awake()
     {
@@ -54,13 +55,13 @@ public class CombatantCell : MonoBehaviour
 
 	public void TakeDamage(int value)
 	{
-		int finalDamage = value;
+		int damageMinusArmour = value;
 		if ((cellData != null) && (cellData.armour != 0))
 		{
-			finalDamage -= cellData.armour;
-			arsenal.DefendCell();
+			damageMinusArmour -= cellData.armour;
+			arsenal.DefendCell(cellData.armour);
 		}
-		health.TakeDamage(finalDamage);
+		health.TakeDamage(damageMinusArmour);
 		if (health.GetHP() <= 0)
 			CellDied();
 	}
@@ -77,7 +78,7 @@ public class CombatantCell : MonoBehaviour
 	{
 		m_Damage += value;
 	}
-	public void SetDamage(int value) { m_Damage = value; Debug.Log("set damage " + value); }
+	public void SetDamage(int value) { m_Damage = value; }
 
 	public virtual void ModifyHealth(int value)
 	{
@@ -96,9 +97,9 @@ public class CombatantCell : MonoBehaviour
 
 	public void CellDied()
 	{
-		if (cellData != null)
+		if (GetCellData() != null)
 		{
-			if (cellData.bOnCellDiedAbility)
+			if (GetCellData().bOnCellDiedAbility)
 			{
 				cellData.OnCellDiedAbility(this);
 			}

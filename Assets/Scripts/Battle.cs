@@ -5,7 +5,8 @@ using UnityEngine;
 public class Battle : MonoBehaviour
 {
 	public CanvasGroup warmupCanvasGroup;
-	public float warmupTime = 1f;
+	public float initialWarmupTime = 10f;
+	public float betweenRoundsWarmupTime = 1f;
 	public float cellResolveTime = 0.3f;
 
 	private CombatantBoard playerBoard;
@@ -13,6 +14,7 @@ public class Battle : MonoBehaviour
 	private BattleUI battleUI;
 	private Health playerHealth;
 	private Health opponentHealth;
+	private WarmupPanel warmupPanel;
 
 	private IEnumerator warmupCoroutine;
 	private IEnumerator battleCoroutine;
@@ -20,6 +22,7 @@ public class Battle : MonoBehaviour
     void Start()
     {
 		battleUI = FindObjectOfType<BattleUI>();
+		warmupPanel = battleUI.GetComponent<WarmupPanel>();
     }
 
 	public void InitBattle(CombatantBoard player, CombatantBoard opponent)
@@ -29,7 +32,18 @@ public class Battle : MonoBehaviour
 		opponentBoard = opponent;
 		opponentHealth = opponentBoard.GetComponent<Health>();
 
-		warmupCoroutine = Warmup();
+		/// grant Move tokens
+		MoveCounter playerMoveCounter = playerBoard.GetComponentInChildren<MoveCounter>();
+		if (playerMoveCounter != null)
+			playerMoveCounter.AddMoveToken(1);
+		MoveCounter opponentMoveCounter = opponentBoard.GetComponentInChildren<MoveCounter>();
+		if (opponentMoveCounter != null)
+			opponentMoveCounter.AddMoveToken(1);
+
+		/// begin game with initial move
+		if (warmupPanel == null)
+			warmupPanel = FindObjectOfType<WarmupPanel>();
+		warmupCoroutine = Warmup("INITIAL MOVE", initialWarmupTime);
 		StartCoroutine(warmupCoroutine);
 	}
 
@@ -57,7 +71,7 @@ public class Battle : MonoBehaviour
 		if (BothCharactersAlive())
 		{
 			/// start next round
-			warmupCoroutine = Warmup();
+			warmupCoroutine = Warmup("READY", betweenRoundsWarmupTime);
 			StartCoroutine(warmupCoroutine);
 
 			/// grant Move tokens
@@ -112,26 +126,22 @@ public class Battle : MonoBehaviour
 
 		if (cellA != null)
 		{
+			if (cellA.bAttackAbility)
+				cellA.AttackAbility(cellSlotA, cellSlotB);
+
 			int cellADamage = combatCellA.GetDamage();
 			if (cellADamage > 0)
-			{
 				combatCellA.GetComponent<CellArsenal>().AttackCell(cellSlotA.transform, cellSlotB.transform, cellADamage);
-			}
-
-			if (cellA.bAttackAbility)
-				cellA.AttackAbility(cellSlotB);
 		}
 
 		if (cellB != null)
 		{
+			if (cellB.bAttackAbility)
+				cellB.AttackAbility(cellSlotB, cellSlotA);
+
 			int cellBDamage = combatCellB.GetDamage();
 			if (cellBDamage > 0)
-			{
 				combatCellB.GetComponent<CellArsenal>().AttackCell(cellSlotB.transform, cellSlotA.transform, cellBDamage);
-			}
-
-			if (cellB.bAttackAbility)
-				cellB.AttackAbility(cellSlotA);
 		}
 	}
 
@@ -142,10 +152,12 @@ public class Battle : MonoBehaviour
 		return (alive && well);
 	}
 
-	private IEnumerator Warmup()
+	private IEnumerator Warmup(string warmupToast, float duration)
 	{
 		ShowWarmup(true);
-		yield return new WaitForSeconds(warmupTime);
+		warmupPanel.SetWarmupMessage(warmupToast);
+		warmupPanel.ActivateWarmupTimer(duration);
+		yield return new WaitForSeconds(duration);
 		ShowWarmup(false);
 		battleCoroutine = ResolveCells();
 		StartCoroutine(battleCoroutine);

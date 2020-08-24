@@ -63,7 +63,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   warmupCanvasGroup: {fileID: 0}
-  warmupTime: 1
+  initialWarmupTime: 6
+  betweenRoundsWarmupTime: 1
   cellResolveTime: 0.69
 --- !u!114 &3138271879930885077
 MonoBehaviour:
@@ -86,3 +87,4 @@ MonoBehaviour:
   - {fileID: 2406604443425190056, guid: 3812eb7f189ff864797c99924eba937f, type: 3}
   - {fileID: 4227360561983004661, guid: 3fe9311a20d9dce4f903da99461e50a4, type: 3}
   - {fileID: -4530358797734023220, guid: 04c4f7f49a0da7542ac0d2e9ff36d6c0, type: 3}
+  - {fileID: -1876700203833103996, guid: b57a3d6dbf7b51a48be69e3d0489492c, type: 3}

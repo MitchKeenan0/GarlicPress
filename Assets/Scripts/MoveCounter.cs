@@ -26,7 +26,7 @@ public class MoveCounter : MonoBehaviour
 		int count = 0;
 		foreach (CombatCellMover cm in cellMovers)
 		{
-			if (cm.GetComponent<CombatantCell>().GetCellData() != null)
+			if ((cm != null) && (cm.GetComponent<CombatantCell>() != null) && (cm.GetComponent<CombatantCell>().GetCellData() != null))
 			{
 				cm.SetMoveable(value, this);
 				count++;

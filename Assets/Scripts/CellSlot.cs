@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
 	public CanvasGroup highlightCanvasGroup;
+	public ParticleSystem slotDamageParticles;
 
 	private Image image;
 	private BoardEditor boardEditor;
@@ -18,6 +19,7 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 	private CombatantBoard board;
 	private CombatantCell combatCell = null;
 	private CombatantCell movingCell = null;
+	private Camera cam;
 
 	public CombatantCell GetCell() { return combatCell; }
 	public CombatantBoard GetBoard() { return board; }
@@ -27,6 +29,7 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		image = GetComponent<Image>();
 		colorBlinker = GetComponent<ColorBlinker>();
 		boardEditor = FindObjectOfType<BoardEditor>();
+		cam = Camera.main;
 		button = GetComponent<Button>();
 		slotSprite = image.sprite;
 		slotColor = image.color;
@@ -44,12 +47,9 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 			cellData = null;
 		}
 
-		if (cc != null)
-			cellData = cc.GetCellData();
-		else
-			cellData = null;
-
 		combatCell = cc;
+		if (combatCell != null)
+			cellData = combatCell.GetCellData();
 	}
 
 	public void TakeDamage(int value)
@@ -61,6 +61,7 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		else
 		{
 			board.TakeDamage(value);
+			slotDamageParticles.Play();
 		}
 	}
 
@@ -142,6 +143,7 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		if ((movingCell != null) && (movingCell.GetCellData() != null))
 		{
 			movingCell.LoadCellData(movingCell.GetCellData());
+			combatCell = movingCell;
 			LoadCell(movingCell, false);
 			combatCell.GetComponent<CombatCellMover>().SetMoving(false, this);
 			combatCell.ShowCanvasGroup(true);
@@ -157,41 +159,52 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 			movingCell.LoadCellData(cd);
 	}
 
-	public List<CellSlot> GetNeighbors()
+	public List<CellSlot> GetNeighborSlots()
 	{
 		List<CellSlot> neighborSlots = new List<CellSlot>();
 		int myIndex = transform.GetSiblingIndex();
 		List<CellSlot> myBoardSlots = new List<CellSlot>();
 		myBoardSlots = board.GetSlots();
 
-		/// right
-		int rightIndex = myIndex + 1;
-		if ((myBoardSlots.Count > rightIndex) && (myBoardSlots[rightIndex] != null))
-		{
-			neighborSlots.Add(myBoardSlots[rightIndex]);
-		}
+		/// using raycasts to cardinal directions for neighbor gets
+		float slotWidth = 0.6f;
+		Vector3 myPosition = transform.position;
 
-		/// left
-		int leftIndex = myIndex - 1;
-		if ((leftIndex >= 0) && (myBoardSlots.Count > leftIndex) && (myBoardSlots[leftIndex] != null))
-		{
-			neighborSlots.Add(myBoardSlots[leftIndex]);
-		}
+		Vector3 northSlotPosition = myPosition + (Vector3.up * slotWidth);
+		CheckCardinalNeighbor(northSlotPosition, myBoardSlots, neighborSlots);
 
-		/// up
-		int upIndex = myIndex + board.width;
-		if ((myBoardSlots.Count > upIndex) && (myBoardSlots[upIndex] != null))
-		{
-			neighborSlots.Add(myBoardSlots[upIndex]);
-		}
+		Vector3 eastSlotPosition = myPosition + (Vector3.right * slotWidth);
+		CheckCardinalNeighbor(eastSlotPosition, myBoardSlots, neighborSlots);
 
-		/// down
-		int downIndex = myIndex - board.width;
-		if ((downIndex >= 0) && (myBoardSlots.Count > downIndex) && (myBoardSlots[downIndex] != null))
-		{
-			neighborSlots.Add(myBoardSlots[downIndex]);
-		}
+		Vector3 southSlotPosition = myPosition + (Vector3.down * slotWidth);
+		CheckCardinalNeighbor(southSlotPosition, myBoardSlots, neighborSlots);
+
+		Vector3 westSlotPosition = myPosition + (Vector3.left * slotWidth);
+		CheckCardinalNeighbor(westSlotPosition, myBoardSlots, neighborSlots);
 
 		return neighborSlots;
+	}
+
+	void CheckCardinalNeighbor(Vector3 pos, List<CellSlot> boardSlots, List<CellSlot> addToList)
+	{
+		RaycastHit[] hits;
+		Vector3 origin = cam.transform.position;
+		Vector3 direction = (pos - origin) * 1.1f;
+
+		hits = Physics.RaycastAll(origin, direction);
+		if (hits.Length > 0)
+		{
+			for(int i = 0; i < hits.Length; i++)
+			{
+				RaycastHit hit = hits[i];
+				Transform objectHit = hit.transform;
+				CellSlot hitSlot = hit.transform.GetComponent<CellSlot>();
+				if ((hitSlot != null) && (boardSlots.Contains(hitSlot)))
+				{
+					addToList.Add(hitSlot);
+					break;
+				}
+			}
+		}
 	}
 }

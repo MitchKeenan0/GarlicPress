@@ -23,7 +23,7 @@ public class CellDataVinegar : CellData
 			if (!battleUI)
 				battleUI = FindObjectOfType<BattleUI>();
 			if (battleUI != null)
-				battleUI.ToastInteraction(myCell.transform.position, damageGainPerRound, 1, "DMG +");
+				battleUI.ToastInteraction(myCell.transform.position, damageGainPerRound, 2, "DMG +");
 		}
 	}
 }

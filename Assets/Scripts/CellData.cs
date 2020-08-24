@@ -12,6 +12,7 @@ public class CellData : MonoBehaviour
 	public int cellValue = 1;
 	public string description = "this cell f_cks";
 	public bool bAttackAbility = false;
+	public bool bOnAttackedAbility = false;
 	public bool bRoundEndAbility = false;
 	public bool bOnMoveAbility = false;
 	public bool bOnCellDiedAbility = false;
@@ -24,7 +25,12 @@ public class CellData : MonoBehaviour
     }
 
 	//-- Abilities
-	public virtual void AttackAbility(CellSlot targetSlot)
+	public virtual void AttackAbility(CellSlot mySlot, CellSlot targetSlot)
+	{
+
+	}
+
+	public virtual void OnAttackedAbility(CellSlot mySlot, CellSlot targetSlot)
 	{
 
 	}

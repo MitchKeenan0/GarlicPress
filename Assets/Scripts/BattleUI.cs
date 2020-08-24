@@ -25,7 +25,7 @@ public class BattleUI : MonoBehaviour
 		}
     }
 
-	/// interaction types	0-damage	1-modifyStats
+	/// interaction types	0-damage	1-armour	2-modifyStats
 	public void ToastInteraction(Vector3 screenPosition, float value, int interactionType, string prefix)
 	{
 		InteractionToast toast = GetInteractionToast();
@@ -37,7 +37,10 @@ public class BattleUI : MonoBehaviour
 		Sprite interationSprite = interactionSpriteArray[interactionType];
 		Color interactionColor = interactionColorArray[interactionType];
 		toast.SetInteractionDetails(interationSprite, prefix + value.ToString("F0"), interactionColor);
-		toast.transform.position = screenPosition;
+
+		Vector3 toastPosition = screenPosition;
+		toastPosition.y += (30 * interactionType);
+		toast.transform.position = toastPosition;
 		toast.SetToastActive(true);
 	}
 

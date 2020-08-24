@@ -16,14 +16,14 @@ public class Health : MonoBehaviour
     {
 		currentHealth = maxHealth;
 		healthUI = GetComponentInChildren<HealthUI>();
-		UpdateHealthUI();
 	}
 
 	public void InitHealth(int value)
 	{
 		maxHealth = value * initScalar;
-		maxHealth = Mathf.Clamp(maxHealth, 0, 99);
+		maxHealth = Mathf.Clamp(maxHealth, 0, value * initScalar);
 		currentHealth = maxHealth;
+		UpdateHealthUI();
 	}
 
 	public virtual void TakeDamage(int damage)

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7870423558041477815}
   - component: {fileID: -4530358797734023220}
   m_Layer: 0
-  m_Name: SoapCellData
+  m_Name: C4SoapCellData
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
   cellSprite: {fileID: 21300000, guid: c0fdcc958ff79fa4291b345d19f82a3a, type: 3}
   damage: 1
   health: 1
-  armour: 3
+  armour: 1
   cellValue: 1
   description: This cell has 2 60% chances to create a copy when eliminated
   bAttackAbility: 0
