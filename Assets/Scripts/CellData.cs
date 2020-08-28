@@ -30,9 +30,9 @@ public class CellData : MonoBehaviour
 
 	}
 
-	public virtual void OnAttackedAbility(CellSlot mySlot, CellSlot targetSlot)
+	public virtual bool OnAttackedAbility(CellSlot mySlot, CellSlot targetSlot)
 	{
-
+		return true;
 	}
 
 	public virtual void RoundEndAbility(CombatantCell myCell)

@@ -7,7 +7,7 @@ public class Health : MonoBehaviour
 	public int maxHealth = 5;
 	public int initScalar = 1;
 
-	private HealthUI healthUI;
+	private HealthUI healthUI = null;
 	private int currentHealth = 0;
 
 	public int GetHP() { return currentHealth; }
@@ -21,7 +21,6 @@ public class Health : MonoBehaviour
 	public void InitHealth(int value)
 	{
 		maxHealth = value * initScalar;
-		maxHealth = Mathf.Clamp(maxHealth, 0, value * initScalar);
 		currentHealth = maxHealth;
 		UpdateHealthUI();
 	}
@@ -34,6 +33,8 @@ public class Health : MonoBehaviour
 
 	void UpdateHealthUI()
 	{
+		if (!healthUI)
+			healthUI = GetComponentInChildren<HealthUI>();
 		if (healthUI != null)
 			healthUI.UpdateHealthValueText(currentHealth);
 	}

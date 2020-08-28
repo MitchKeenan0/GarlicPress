@@ -54,27 +54,31 @@ public class CellArsenal : MonoBehaviour
 		attackParticles.transform.localScale = Vector3.one * particleDamageScale;
 		attackParticles.Play();
 
-		CellSlot receivingCellSlot = targetTransform.GetComponent<CellSlot>();
-		if (receivingCellSlot != null)
+		bool bAttackThrough = true;
+
+		CellSlot targetCellSlot = targetTransform.GetComponent<CellSlot>();
+		if (targetCellSlot != null)
 		{
-			CombatantCell attackedCell = receivingCellSlot.GetCell();
-			if (attackedCell != null)
+			CombatantCell targetCell = targetCellSlot.GetCell();
+			if (targetCell != null)
 			{
-				CellData cellData = attackedCell.GetCellData();
+				CellData cellData = targetCell.GetCellData();
 				if ((cellData != null) && cellData.bOnAttackedAbility)
 				{
 					CellSlot slotA = attackerTransform.GetComponent<CellSlot>();
 					CellSlot slotB = targetTransform.GetComponent<CellSlot>();
-					cellData.OnAttackedAbility(slotB, slotA);
+					bAttackThrough = cellData.OnAttackedAbility(slotB, slotA);
 				}
 			}
 
-			receivingCellSlot.TakeDamage(damage);
+			if (bAttackThrough)
+				targetCellSlot.TakeDamage(damage);
 		}
 			
-
-		battleUI.ToastInteraction(receivingCellSlot.transform.position, damage, 0, "-");
-
-		battle.TestBattleOver();
+		if (bAttackThrough)
+		{
+			battleUI.ToastInteraction(targetCellSlot.transform.position, damage, 0, "--");
+			battle.TestBattleOver();
+		}
 	}
 }

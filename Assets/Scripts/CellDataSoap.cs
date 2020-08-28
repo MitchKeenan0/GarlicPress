@@ -15,6 +15,7 @@ public class CellDataSoap : CellData
 		numFragmentsDropped = 0;
     }
 
+	/// Soap has 2 60% chances to create a copy when eliminated
 	public override void OnCellDiedAbility(CombatantCell myCell)
 	{
 		base.OnCellDiedAbility(myCell);

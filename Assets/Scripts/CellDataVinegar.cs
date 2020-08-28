@@ -13,6 +13,7 @@ public class CellDataVinegar : CellData
 		battleUI = FindObjectOfType<BattleUI>();
     }
 
+	/// Vinegar gains incremental damage after each round
 	public override void RoundEndAbility(CombatantCell myCell)
 	{
 		base.RoundEndAbility(myCell);
@@ -23,7 +24,7 @@ public class CellDataVinegar : CellData
 			if (!battleUI)
 				battleUI = FindObjectOfType<BattleUI>();
 			if (battleUI != null)
-				battleUI.ToastInteraction(myCell.transform.position, damageGainPerRound, 2, "DMG +");
+				battleUI.ToastInteraction(myCell.transform.position, damageGainPerRound, 2, "dmg +");
 		}
 	}
 }

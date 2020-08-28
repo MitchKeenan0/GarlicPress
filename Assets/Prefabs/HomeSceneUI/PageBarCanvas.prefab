@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8525038961362492030}
   - component: {fileID: 8525038961362492029}
   - component: {fileID: 8525038961362492028}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: PlayButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 8525038961783022767}
   - component: {fileID: 8525038961783022766}
   - component: {fileID: 8525038961783022760}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: BarPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 120}
+  m_AnchoredPosition: {x: 0, y: 150}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8525038961783022767
@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 8525038961893302061}
   - component: {fileID: 8525038961893302063}
   - component: {fileID: 8525038961893302062}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -326,7 +326,7 @@ GameObject:
   - component: {fileID: 8525038961922701274}
   - component: {fileID: 8525038961922701273}
   - component: {fileID: 8525038961922701253}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: PageBarCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 8525038962788326758}
   - component: {fileID: 8525038962788326752}
   - component: {fileID: 8525038962788326759}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -520,7 +520,7 @@ GameObject:
   - component: {fileID: 8525038963176487886}
   - component: {fileID: 8525038963176487885}
   - component: {fileID: 8525038963176487884}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: LibraryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}

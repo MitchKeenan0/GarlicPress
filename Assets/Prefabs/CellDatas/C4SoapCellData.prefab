@@ -45,12 +45,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellName: Soap
   cellSprite: {fileID: 21300000, guid: c0fdcc958ff79fa4291b345d19f82a3a, type: 3}
-  damage: 1
-  health: 1
-  armour: 1
+  damage: 3
+  health: 3
+  armour: 3
   cellValue: 1
   description: This cell has 2 60% chances to create a copy when eliminated
   bAttackAbility: 0
+  bOnAttackedAbility: 0
   bRoundEndAbility: 0
   bOnMoveAbility: 0
   bOnCellDiedAbility: 1

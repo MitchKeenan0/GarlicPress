@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7870423558041477815}
   - component: {fileID: 4227360561983004661}
   m_Layer: 0
-  m_Name: VinegarCellData
+  m_Name: C3VinegarCellData
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,14 +45,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellName: Vinegar
   cellSprite: {fileID: 21300000, guid: 54871843e73d7914a8a3f51603afef82, type: 3}
-  damage: 5
-  health: 5
+  damage: 3
+  health: 6
   armour: 1
   cellValue: 2
-  description: Gains +5 damage after each round
+  description: Gains +3 damage after each round
   bAttackAbility: 0
+  bOnAttackedAbility: 0
   bRoundEndAbility: 1
   bOnMoveAbility: 0
   bOnCellDiedAbility: 0
   saveID: 3
-  damageGainPerRound: 5
+  damageGainPerRound: 3

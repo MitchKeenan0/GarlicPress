@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5000915663838752400}
   - component: {fileID: 7102776152364902914}
   m_Layer: 0
-  m_Name: HeavyWaterCellData
+  m_Name: C1HeavyWaterCellData
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,12 +45,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellName: Heavy Water
   cellSprite: {fileID: 21300000, guid: c1325da2eaa329346a03218f9caa2ab3, type: 3}
-  damage: 15
-  health: 5
+  damage: 18
+  health: 6
   armour: 0
-  cellValue: 2
-  description: When this cell is destroyed it will be replaced by a Water cell
+  cellValue: 3
+  description: When this cell is eliminated it is replaced by a Water cell
   bAttackAbility: 0
+  bOnAttackedAbility: 0
   bRoundEndAbility: 0
   bOnMoveAbility: 0
   bOnCellDiedAbility: 1

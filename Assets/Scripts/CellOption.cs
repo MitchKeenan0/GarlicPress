@@ -6,7 +6,8 @@ using UnityEngine.EventSystems;
 
 public class CellOption : MonoBehaviour
 {
-	private Image cellImage;
+	public Image cellImage;
+
 	private Text cellValueText;
 	private CellLibrary cellLibrary;
 	private CellData cellData;
@@ -16,7 +17,6 @@ public class CellOption : MonoBehaviour
     void Awake()
     {
 		cellLibrary = FindObjectOfType<CellLibrary>();
-		cellImage = GetComponent<Image>();
 		cellValueText = GetComponentInChildren<Text>();
     }
 

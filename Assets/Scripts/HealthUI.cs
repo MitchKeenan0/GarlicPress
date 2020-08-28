@@ -14,7 +14,6 @@ public class HealthUI : MonoBehaviour
 
 	public void UpdateHealthValueText(int value)
 	{
-		int safeValue = Mathf.Clamp(value, 0, 999);
-		healthValueText.text = safeValue.ToString();
+		healthValueText.text = value.ToString();
 	}
 }

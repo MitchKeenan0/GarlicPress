@@ -83,6 +83,8 @@ public class CombatantCell : MonoBehaviour
 	public virtual void ModifyHealth(int value)
 	{
 		m_Health += value;
+		if (m_Health > health.maxHealth)
+			health.InitHealth(m_Health);
 	}
 	public void SetHealth(int value)
 	{

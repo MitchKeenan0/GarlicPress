@@ -19,12 +19,22 @@ public class InteractionToast : MonoBehaviour
 		canvasGroup = GetComponent<CanvasGroup>();
     }
 
-    public void SetInteractionDetails(Sprite sprite, string value, Color col)
+	void Update()
+	{
+		if (bActive)
+			transform.position += (Vector3.up * Time.deltaTime * 0.1f);
+	}
+
+	public void SetInteractionDetails(Sprite sprite, string value, Color col, Vector3 textOffset)
 	{
 		interactionImage.sprite = sprite;
-		interactionImage.color = col;
+		Color interactionImageColor = col * 0.6f;
+		interactionImageColor.a = 1f;
+		interactionImage.color = interactionImageColor;
+
 		interactionText.text = value;
 		interactionText.color = col;
+		interactionText.transform.localPosition = textOffset;
 	}
 
 	public void SetToastActive(bool value)

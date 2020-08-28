@@ -8,9 +8,21 @@ public class CharacterData : MonoBehaviour
 	public int characterLevel = 1;
 	public CellData[] cells;
 
+	private int characterXp = 0;
+
 	void Awake()
 	{
 		DontDestroyChildOnLoad(gameObject);
+	}
+
+	public virtual void AddXP(int value)
+	{
+		characterXp += value;
+	}
+
+	public virtual void ResetXP(int value)
+	{
+		characterXp = value;
 	}
 
 	public static void DontDestroyChildOnLoad(GameObject child)

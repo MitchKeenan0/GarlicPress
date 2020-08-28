@@ -18,6 +18,7 @@ public class Battle : MonoBehaviour
 
 	private IEnumerator warmupCoroutine;
 	private IEnumerator battleCoroutine;
+	private IEnumerator endOfRoundCoroutine;
 
     void Start()
     {
@@ -74,6 +75,10 @@ public class Battle : MonoBehaviour
 			warmupCoroutine = Warmup("READY", betweenRoundsWarmupTime);
 			StartCoroutine(warmupCoroutine);
 
+			/// end-of-round Abilities
+			endOfRoundCoroutine = EndOfRound();
+			StartCoroutine(endOfRoundCoroutine);
+
 			/// grant Move tokens
 			MoveCounter playerMoveCounter = playerBoard.GetComponentInChildren<MoveCounter>();
 			if (playerMoveCounter != null)
@@ -81,20 +86,6 @@ public class Battle : MonoBehaviour
 			MoveCounter opponentMoveCounter = opponentBoard.GetComponentInChildren<MoveCounter>();
 			if (opponentMoveCounter != null)
 				opponentMoveCounter.AddMoveToken(1);
-
-			/// end-of-round Abilities
-			CombatantCell[] playerCells = playerBoard.GetComponentsInChildren<CombatantCell>();
-			foreach(CombatantCell pc in playerCells)
-			{
-				if ((pc.GetCellData() != null) && (pc.GetCellData().bRoundEndAbility))
-					pc.GetCellData().RoundEndAbility(pc);
-			}
-			CombatantCell[] opponentCells = opponentBoard.GetComponentsInChildren<CombatantCell>();
-			foreach (CombatantCell oc in opponentCells)
-			{
-				if ((oc.GetCellData() != null) && (oc.GetCellData().bRoundEndAbility))
-					oc.GetCellData().RoundEndAbility(oc);
-			}
 		}
 		else
 		{
@@ -168,5 +159,33 @@ public class Battle : MonoBehaviour
 		warmupCanvasGroup.alpha = value ? 1f : 0f;
 		warmupCanvasGroup.blocksRaycasts = value;
 		warmupCanvasGroup.interactable = value;
+	}
+
+	private IEnumerator EndOfRound()
+	{
+		CombatantCell[] playerCells = playerBoard.GetComponentsInChildren<CombatantCell>();
+		CombatantCell[] opponentCells = opponentBoard.GetComponentsInChildren<CombatantCell>();
+		int cellCount = playerCells.Length;
+		if (opponentCells.Length > cellCount)
+			cellCount = opponentCells.Length;
+
+		for(int i = 0; i < cellCount; i++)
+		{
+			if ((playerCells.Length > i) && (playerCells[i] != null))
+			{
+				CombatantCell pc = playerCells[i];
+				if ((pc.GetCellData() != null) && (pc.GetCellData().bRoundEndAbility))
+					pc.GetCellData().RoundEndAbility(pc);
+			}
+
+			if ((opponentCells.Length > i) && (opponentCells[i] != null))
+			{
+				CombatantCell oc = opponentCells[i];
+				if ((oc.GetCellData() != null) && (oc.GetCellData().bRoundEndAbility))
+					oc.GetCellData().RoundEndAbility(oc);
+			}
+
+			yield return new WaitForSeconds(0.11f);
+		}
 	}
 }

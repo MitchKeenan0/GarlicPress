@@ -14,6 +14,7 @@ public class Matchmaker : MonoBehaviour
 
 	private bool bActive = false;
 	private bool bLaunched = false;
+	private bool bUpdateFlip = false;
 	private float searchTime = 0f;
 
     void Start()
@@ -25,8 +26,12 @@ public class Matchmaker : MonoBehaviour
 	{
 		if (bActive)
 		{
+			if (bUpdateFlip)
+				searchTimeText.text = searchTime.ToString("F2");
+			bUpdateFlip = !bUpdateFlip;
+
 			searchTime += Time.deltaTime;
-			searchTimeText.text = searchTime.ToString("F2");
+			
 			/// Temp code until Looking For Game
 			if (!bLaunched && (searchTime >= minimumLoadTime))
 			{

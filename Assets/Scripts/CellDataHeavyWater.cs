@@ -13,7 +13,7 @@ public class CellDataHeavyWater : CellData
         
     }
 
-	/// HeavyWater 'decays' into regular Water on death
+	/// HeavyWater 'decays' into regular Water when eliminated
 	public override void OnCellDiedAbility(CombatantCell myCell)
 	{
 		base.OnCellDiedAbility(myCell);

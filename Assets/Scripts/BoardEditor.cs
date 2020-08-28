@@ -157,10 +157,8 @@ public class BoardEditor : MonoBehaviour
 
 	public void PlaceCell(CellSlot intoSlot)
 	{
-		Debug.Log("Placing Cell");
 		if (bEditing && (hotCellData != null))
 		{
-			Debug.Log("editing...");
 			int slotIndex = intoSlot.transform.GetSiblingIndex();
 			
 			/// placed to empty slot...
