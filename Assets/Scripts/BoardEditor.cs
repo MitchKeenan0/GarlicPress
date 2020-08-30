@@ -13,7 +13,7 @@ public class BoardEditor : MonoBehaviour
 	public Transform removeCellPanel;
 
 	private List<CellSlot> slotList;
-	private List<CellData> cellDataList;
+	private List<CellData> boardCellDataList;
 	private CombatantBoard playerBoard;
 	private CellData hotCellData = null;
 	private CellSlot removingSlot = null;
@@ -25,7 +25,7 @@ public class BoardEditor : MonoBehaviour
 	void Awake()
 	{
 		slotList = new List<CellSlot>();
-		cellDataList = new List<CellData>();
+		boardCellDataList = new List<CellData>();
 	}
 
     void Start()
@@ -106,9 +106,9 @@ public class BoardEditor : MonoBehaviour
 				slotCellData = cs.GetCell().GetCellData();
 			if (slotCellData != null)
 			{
-				if (!cellDataList.Contains(slotCellData))
+				if (!boardCellDataList.Contains(slotCellData))
 				{
-					cellDataList.Add(slotCellData);
+					boardCellDataList.Add(slotCellData);
 				}
 			}
 		}
@@ -159,52 +159,44 @@ public class BoardEditor : MonoBehaviour
 	{
 		if (bEditing && (hotCellData != null))
 		{
-			int slotIndex = intoSlot.transform.GetSiblingIndex();
+			int placingSlotIndex = intoSlot.transform.GetSiblingIndex();
 			
 			/// placed to empty slot...
 			if (((intoSlot.GetCell() == null) || ((intoSlot.GetCell() != null) && (intoSlot.GetCell().GetCellData() == null)))
 				&& ((boardValue + hotCellData.cellValue) <= maxBoardValue))
 			{
 				CombatantCell combatCell = playerBoard.SpawnCombatCell(hotCellData, intoSlot);
-				intoSlot.LoadCell(combatCell, false);
-				if (cellDataList.Count > slotIndex)
+				intoSlot.LoadCell(combatCell, hotCellData, false);
+				if (boardCellDataList.Count > placingSlotIndex)
 				{
-					cellDataList[slotIndex] = hotCellData;
+					boardCellDataList[placingSlotIndex] = hotCellData;
 				}
 				else
 				{
-					int difference = (slotIndex - cellDataList.Count) + 1;
+					int difference = (placingSlotIndex - boardCellDataList.Count) + 1;
 					for(int i = 0; i < difference; i++)
 					{
-						cellDataList.Add(null);
+						boardCellDataList.Add(null);
 					}
-					cellDataList[slotIndex] = hotCellData;
+					boardCellDataList[placingSlotIndex] = hotCellData;
 				}
-
-				Debug.Log("loaded cell from empty");
 			}
 			else if (intoSlot.GetCell() != null)
 			{
 				/// or overwrite existing cell
 				CombatantCell existingCell = intoSlot.GetCell();
 				existingCell.LoadCellData(hotCellData);
-				intoSlot.LoadCell(existingCell, false);
-				if (cellDataList.Count > slotIndex)
-					cellDataList[slotIndex] = hotCellData;
+				intoSlot.LoadCell(existingCell, hotCellData, false);
+				if (boardCellDataList.Count > placingSlotIndex)
+					boardCellDataList[placingSlotIndex] = hotCellData;
 				else
-					cellDataList.Add(hotCellData);
-
-				Debug.Log("overwrite cell");
+					boardCellDataList.Add(hotCellData);
 			}
 
 			hotCellData = null;
 			bEditing = false;
 			UpdateBoardValue();
 			game.SaveGame();
-		}
-		else
-		{
-			Debug.Log("place bounced");
 		}
 	}
 

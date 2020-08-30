@@ -20,9 +20,20 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 	private CombatantCell combatCell = null;
 	private CombatantCell movingCell = null;
 	private Camera cam;
+	private int teamID = -1;
 
 	public CombatantCell GetCell() { return combatCell; }
 	public CombatantBoard GetBoard() { return board; }
+
+	public int GetTeamID() { return teamID; }
+	public void SetTeamID(int value)
+	{
+		teamID = value;
+		CellArsenal myArsenal = GetComponentInChildren<CellArsenal>();
+		if (myArsenal != null)
+			myArsenal.InitCellArsenal(this);
+	}
+	
 
     void Awake()
     {
@@ -38,18 +49,20 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		SetInteractible(false);
     }
 
-	public void LoadCell(CombatantCell cc, bool bEraseCell)
+	public void LoadCell(CombatantCell cc, CellData data, bool bEraseCell)
 	{
 		if (cc == null)
 		{
 			if (bEraseCell && (combatCell != null))
 				combatCell.LoadCellData(null);
-			cellData = null;
 		}
 
 		combatCell = cc;
-		if (combatCell != null)
-			cellData = combatCell.GetCellData();
+		cellData = data;
+		if ((combatCell != null) && (cellData != null))
+		{
+			combatCell.LoadCellData(cellData);
+		}
 	}
 
 	public void TakeDamage(int value)
@@ -112,7 +125,7 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
 	public void ClearCell(bool bEraseCell)
 	{
-		LoadCell(null, bEraseCell);
+		LoadCell(null, null, bEraseCell);
 		image.sprite = slotSprite;
 		//image.color = slotColor;
 		//ColorBlock cb = button.colors;
@@ -133,7 +146,7 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 			{
 				RecordMovingCell(combatCell, combatCell.GetCellData());
 				combatCell.ShowCanvasGroup(true);
-				LoadCell(null, false);
+				ClearCell(false);
 			}
 		}
 	}
@@ -144,7 +157,7 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		{
 			movingCell.LoadCellData(movingCell.GetCellData());
 			combatCell = movingCell;
-			LoadCell(movingCell, false);
+			LoadCell(movingCell, movingCell.GetCellData(), false);
 			combatCell.GetComponent<CombatCellMover>().SetMoving(false, this);
 			combatCell.ShowCanvasGroup(true);
 			combatCell.GetComponent<CombatCellMover>().FinishMoveToSlot();

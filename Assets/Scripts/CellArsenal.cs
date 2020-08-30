@@ -9,24 +9,34 @@ public class CellArsenal : MonoBehaviour
 	public float hitDelay = 0.1f;
 
 	private CellAttack cellAttack = null;
+	private CellSlot mySlot = null;
 	private BattleUI battleUI = null;
 	private Battle battle = null;
-	private IEnumerator attackCoroutine;
+	private Transform mySlotTransform = null;
+	private int myDamage = 0;
+	private IEnumerator hitDelayCoroutine;
 
     void Start()
     {
 		cellAttack = GetComponentInChildren<CellAttack>();
+		mySlot = transform.GetComponentInParent<CellSlot>();
 		battleUI = FindObjectOfType<BattleUI>();
 		battle = FindObjectOfType<Battle>();
     }
 
-	public virtual void AttackCell(Transform attackerTransform, Transform targetTransform, int damage)
+	public void InitCellArsenal(CellSlot slot)
+	{
+		mySlot = slot;
+		cellAttack.InitCellAttack(this, mySlot.GetTeamID());
+	}
+
+	public virtual void StartHitAfterDelay(Transform attackerTransform, Transform targetTransform, int damage)
 	{
 		if (cellAttack != null)
 		{
+			mySlotTransform = attackerTransform;
+			myDamage = damage;
 			cellAttack.StartAttack(attackerTransform, targetTransform);
-			attackCoroutine = AttackDuration(cellAttack.attackTravelDuration, attackerTransform, targetTransform, damage);
-			StartCoroutine(attackCoroutine);
 		}
 	}
 
@@ -39,15 +49,15 @@ public class CellArsenal : MonoBehaviour
 		}
 	}
 
-	public virtual void Ability(ParticleSystem ps)
+	public virtual void AttackColliderHit(Transform hitTransform)
 	{
-
+		hitDelayCoroutine = HitAfterDelay(hitDelay, mySlotTransform, hitTransform, myDamage);
+		StartCoroutine(hitDelayCoroutine);
+		cellAttack.EndAttack();
 	}
 
-	private IEnumerator AttackDuration(float duration, Transform attackerTransform, Transform targetTransform, int damage)
+	private void HitCell(Transform attackerTransform, Transform targetTransform, int damage)
 	{
-		yield return new WaitForSeconds(duration + hitDelay);
-
 		attackParticles.transform.SetParent(targetTransform);
 		attackParticles.transform.localPosition = Vector3.zero;
 		int particleDamageScale = Mathf.Clamp(damage, 1, 20);
@@ -62,23 +72,29 @@ public class CellArsenal : MonoBehaviour
 			CombatantCell targetCell = targetCellSlot.GetCell();
 			if (targetCell != null)
 			{
-				CellData cellData = targetCell.GetCellData();
-				if ((cellData != null) && cellData.bOnAttackedAbility)
+				CellData targetCellData = targetCell.GetCellData();
+				if ((targetCellData != null) && targetCellData.bOnAttackedAbility)
 				{
 					CellSlot slotA = attackerTransform.GetComponent<CellSlot>();
 					CellSlot slotB = targetTransform.GetComponent<CellSlot>();
-					bAttackThrough = cellData.OnAttackedAbility(slotB, slotA);
+					bAttackThrough = targetCellData.OnAttackedAbility(slotB, slotA);
 				}
 			}
 
 			if (bAttackThrough)
 				targetCellSlot.TakeDamage(damage);
 		}
-			
+
 		if (bAttackThrough)
 		{
 			battleUI.ToastInteraction(targetCellSlot.transform.position, damage, 0, "--");
 			battle.TestBattleOver();
 		}
+	}
+
+	private IEnumerator HitAfterDelay(float duration, Transform attackerTransform, Transform targetTransform, int damage)
+	{
+		yield return new WaitForSeconds(duration);
+		HitCell(attackerTransform, targetTransform, damage);
 	}
 }

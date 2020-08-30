@@ -42,7 +42,7 @@ public class CombatantBoard : MonoBehaviour
 				if ((cells[i] != null) && (slotList.Count > i))
 				{
 					CombatantCell combatCell = SpawnCombatCell(cells[i], slotList[i]);
-					slotList[i].LoadCell(combatCell, false);
+					slotList[i].LoadCell(combatCell, combatCell.GetCellData(), false);
 				}
 			}
 		}
@@ -56,6 +56,18 @@ public class CombatantBoard : MonoBehaviour
 		BoardEditor be = FindObjectOfType<BoardEditor>();
 		if (be != null)
 			be.LoadSlots();
+	}
+
+	public void SetBoardTeamID(int value)
+	{
+		if (slotList != null)
+		{
+			for (int i = 0; i < slotList.Count; i++)
+			{
+				CellSlot cs = slotList[i];
+				cs.SetTeamID(value);
+			}
+		}
 	}
 
 	public void TakeDamage(int value)
@@ -91,9 +103,8 @@ public class CombatantBoard : MonoBehaviour
 	public CombatantCell SpawnCombatCell(CellData cellData, CellSlot parentSlot)
 	{
 		CombatantCell cc = Instantiate(combatCellPrefab, parentSlot.transform);
-		cc.LoadCellData(cellData);
 		combatCellList.Add(cc);
-		parentSlot.LoadCell(cc, false);
+		parentSlot.LoadCell(cc, cellData, false);
 		return cc;
 	}
 
@@ -127,5 +138,72 @@ public class CombatantBoard : MonoBehaviour
 				result++;
 		}
 		return result;
+	}
+
+	public void MirrorBoard()
+	{
+		// 1 - store & clear the top and bottom rows
+		/// top
+		List<CombatantCell> topRowCells = new List<CombatantCell>();
+		for(int i = 0; i < boardColumnCount; i++)
+		{
+			CellSlot slot = slotList[i];
+			if (slot != null)
+			{
+				CombatantCell cell = slot.GetCell();
+				if ((cell != null) && (cell.GetCellData() != null))
+					topRowCells.Add(cell);
+			}
+		}
+		/// bottom
+		List<CombatantCell> bottomRowCells = new List<CombatantCell>();
+		for (int i = 0; i < boardColumnCount; i++)
+		{
+			int mirrorIndex = i + (boardColumnCount * 2);
+			CellSlot slot = slotList[mirrorIndex];
+			if (slot != null)
+			{
+				CombatantCell cell = slot.GetCell();
+				if ((cell != null) && (cell.GetCellData() != null))
+					bottomRowCells.Add(cell);
+			}
+		}
+
+		// 2 - load exchanged rows
+		/// top
+		for(int i = 0; i < boardColumnCount; i++)
+		{
+			if ((i < bottomRowCells.Count) && (bottomRowCells[i] != null))
+			{
+				CellSlot slot = slotList[i];
+				CombatantCell cell = bottomRowCells[i];
+				CellData data = cell.GetCellData();
+
+				slot.LoadCell(cell, data, false);
+				cell.LoadCellData(data);
+				cell.transform.SetParent(slot.transform);
+				cell.transform.localPosition = Vector3.zero;
+				transform.localScale = Vector3.one;
+				cell.SetSlot(slot);
+			}
+		}
+		/// bottom
+		for(int i = 0; i < boardColumnCount; i++)
+		{
+			if ((i < topRowCells.Count) && (topRowCells[i] != null))
+			{
+				int mirrorIndex = i + (boardColumnCount * 2);
+				CellSlot slot = slotList[mirrorIndex];
+				CombatantCell cell = topRowCells[i];
+				CellData data = cell.GetCellData();
+
+				slot.LoadCell(cell, data, false);
+				cell.LoadCellData(data);
+				cell.transform.SetParent(slot.transform);
+				cell.transform.localPosition = Vector3.zero;
+				transform.localScale = Vector3.one;
+				cell.SetSlot(slot);
+			}
+		}
 	}
 }

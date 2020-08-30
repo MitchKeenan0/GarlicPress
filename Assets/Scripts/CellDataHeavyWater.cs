@@ -24,8 +24,7 @@ public class CellDataHeavyWater : CellData
 			CellSlot mySlot = myCombatCell.GetSlot();
 			if (mySlot != null)
 			{
-				myCombatCell.LoadCellData(waterCellData);
-				mySlot.LoadCell(myCombatCell, false);
+				mySlot.LoadCell(myCombatCell, waterCellData, false);
 			}
 		}
 	}

@@ -30,10 +30,14 @@ public class Battle : MonoBehaviour
 	{
 		playerBoard = player;
 		playerHealth = playerBoard.GetComponent<Health>();
+		playerBoard.SetBoardTeamID(0);
+
 		opponentBoard = opponent;
 		opponentHealth = opponentBoard.GetComponent<Health>();
+		opponentBoard.SetBoardTeamID(1);
+		opponentBoard.MirrorBoard();
 
-		/// grant Move tokens
+		/// grant Initial Move tokens
 		MoveCounter playerMoveCounter = playerBoard.GetComponentInChildren<MoveCounter>();
 		if (playerMoveCounter != null)
 			playerMoveCounter.AddMoveToken(1);
@@ -122,7 +126,7 @@ public class Battle : MonoBehaviour
 
 			int cellADamage = combatCellA.GetDamage();
 			if (cellADamage > 0)
-				combatCellA.GetComponent<CellArsenal>().AttackCell(cellSlotA.transform, cellSlotB.transform, cellADamage);
+				combatCellA.GetComponent<CellArsenal>().StartHitAfterDelay(cellSlotA.transform, cellSlotB.transform, cellADamage);
 		}
 
 		if (cellB != null)
@@ -132,7 +136,7 @@ public class Battle : MonoBehaviour
 
 			int cellBDamage = combatCellB.GetDamage();
 			if (cellBDamage > 0)
-				combatCellB.GetComponent<CellArsenal>().AttackCell(cellSlotB.transform, cellSlotA.transform, cellBDamage);
+				combatCellB.GetComponent<CellArsenal>().StartHitAfterDelay(cellSlotB.transform, cellSlotA.transform, cellBDamage);
 		}
 	}
 

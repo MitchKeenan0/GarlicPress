@@ -32,7 +32,7 @@ public class CellDataCaesium : CellData
 				///
 				bAttackThrough = false;
 				myCell.SetDamage(targetCellDamage);
-				myCell.GetComponent<CellArsenal>().AttackCell(mySlot.transform, targetSlot.transform, myCell.GetDamage());
+				myCell.GetComponent<CellArsenal>().StartHitAfterDelay(mySlot.transform, targetSlot.transform, myCell.GetDamage());
 				myCell.SetDamage(0);
 			}
 		}
