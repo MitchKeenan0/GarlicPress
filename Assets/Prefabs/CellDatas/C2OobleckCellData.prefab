@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellName: Oobleck
-  cellSprite: {fileID: 21300000, guid: 876143908741bc74f8f1e54db86d16fe, type: 3}
+  cellSprite: {fileID: 21300000, guid: 261c71365da92884ebc1962997ee9cf2, type: 3}
   damage: 3
   health: 12
   armour: 3

@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellName: Vinegar
-  cellSprite: {fileID: 21300000, guid: 54871843e73d7914a8a3f51603afef82, type: 3}
+  cellSprite: {fileID: 21300000, guid: 1397af4bf1c298a43b2c4410508ad949, type: 3}
   damage: 3
   health: 6
   armour: 1

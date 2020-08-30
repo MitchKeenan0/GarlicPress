@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellName: Gallium
-  cellSprite: {fileID: 21300000, guid: c5f33d7fcbc46a24d9ac773ba31189a3, type: 3}
+  cellSprite: {fileID: 21300000, guid: fce160bda3f9acd4abed24005e82200c, type: 3}
   damage: 6
   health: 6
   armour: 1

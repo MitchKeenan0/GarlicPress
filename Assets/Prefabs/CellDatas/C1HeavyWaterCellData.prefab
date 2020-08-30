@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellName: Heavy Water
-  cellSprite: {fileID: 21300000, guid: c1325da2eaa329346a03218f9caa2ab3, type: 3}
+  cellSprite: {fileID: 21300000, guid: 3a82ae00f05abec46a64021586e384c3, type: 3}
   damage: 18
   health: 6
   armour: 0

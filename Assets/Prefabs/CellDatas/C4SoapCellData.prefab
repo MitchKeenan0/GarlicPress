@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellName: Soap
-  cellSprite: {fileID: 21300000, guid: c0fdcc958ff79fa4291b345d19f82a3a, type: 3}
+  cellSprite: {fileID: 21300000, guid: 4a38fede90153404691bc86b564d6fc6, type: 3}
   damage: 3
   health: 3
   armour: 3
