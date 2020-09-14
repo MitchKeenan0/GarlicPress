@@ -710,10 +710,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: aed9206a-ecc5-4612-91ef-24a38062fef0
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: Press
+  organizationId: mitch-keenan
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

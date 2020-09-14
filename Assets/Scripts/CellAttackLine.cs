@@ -45,6 +45,7 @@ public class CellAttackLine : CellAttack
 
 			/// line head &..
 			lineTravelPosition = Vector3.Lerp(myPos, opPos, attackTime * (1f / attackTravelDuration));
+			lineTravelPosition.z = transform.position.z;
 			lineRender.SetPosition(1, lineTravelPosition);
 			attackHeadTransfom.position = lineTravelPosition;
 
@@ -53,6 +54,7 @@ public class CellAttackLine : CellAttack
 			{
 				tailDuration += deltaT;
 				lineTailPosition = Vector3.Lerp(myPos, opPos, tailDuration * (1f / attackTravelDuration));
+				lineTailPosition.z = transform.position.z;
 				lineRender.SetPosition(0, lineTailPosition);
 			}
 
@@ -97,7 +99,9 @@ public class CellAttackLine : CellAttack
 	private void StartLineAttack()
 	{
 		myPos = mySlot.transform.position;
-		opPos = opponentSlot.transform.position;
+		///opPos = opponentSlot.transform.position;
+		opPos = (opponentSlot.transform.position - mySlot.transform.position).normalized * 10f;
+		opPos.x = myPos.x;
 		lineTravelPosition = myPos;
 		lineTailPosition = myPos;
 		attackTime = 0f;

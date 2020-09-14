@@ -60,11 +60,20 @@ public class CombatantBoard : MonoBehaviour
 
 	public void SetBoardTeamID(int value)
 	{
+		if (combatCellList != null)
+		{
+			for (int i = 0; i < combatCellList.Count; i++)
+			{
+				CombatantCell cc = combatCellList[i];
+				cc.InitCombatantCell(value);
+			}
+		}
+
 		if (slotList != null)
 		{
-			for (int i = 0; i < slotList.Count; i++)
+			for (int j = 0; j < slotList.Count; j++)
 			{
-				CellSlot cs = slotList[i];
+				CellSlot cs = slotList[j];
 				cs.SetTeamID(value);
 			}
 		}

@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7f91783c62c714cb746f7c1b4382d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTravelDuration: 0.3
-  lineTailLength: 0.8
+  attackTravelDuration: 1.6
+  lineTailLength: 0.3
 --- !u!120 &7697828751232655230
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -187,7 +187,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastDirection: {x: 0, y: 0, z: 2}
   raycastOriginOffset: {x: -0, y: -0, z: -1}
-  teamID: 0
 --- !u!1001 &367550160442421850
 PrefabInstance:
   m_ObjectHideFlags: 0

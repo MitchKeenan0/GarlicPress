@@ -65,7 +65,7 @@ MonoBehaviour:
   warmupCanvasGroup: {fileID: 0}
   initialWarmupTime: 6
   betweenRoundsWarmupTime: 1
-  cellResolveTime: 0.69
+  cellResolveTime: 1.6
 --- !u!114 &3138271879930885077
 MonoBehaviour:
   m_ObjectHideFlags: 0

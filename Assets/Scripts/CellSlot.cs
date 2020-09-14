@@ -8,8 +8,8 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
 	public CanvasGroup highlightCanvasGroup;
 	public ParticleSystem slotDamageParticles;
+	public Image image;
 
-	private Image image;
 	private BoardEditor boardEditor;
 	private ColorBlinker colorBlinker;
 	private CellData cellData;
@@ -37,7 +37,6 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     void Awake()
     {
-		image = GetComponent<Image>();
 		colorBlinker = GetComponent<ColorBlinker>();
 		boardEditor = FindObjectOfType<BoardEditor>();
 		cam = Camera.main;
@@ -71,11 +70,11 @@ public class CellSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		{
 			combatCell.TakeDamage(value);
 		}
-		else
-		{
-			board.TakeDamage(value);
-			slotDamageParticles.Play();
-		}
+		//else
+		//{
+		//	board.TakeDamage(value);
+		//	slotDamageParticles.Play();
+		//}
 	}
 
 	public void SetInteractible(bool value)

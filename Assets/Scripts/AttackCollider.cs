@@ -8,8 +8,10 @@ public class AttackCollider : MonoBehaviour
 	public Vector3 raycastOriginOffset = Vector3.forward * -1;
 
 	private CellArsenal myArsenal = null;
+	private Vector3 previousOrigin = Vector3.zero;
 	private bool bUpdating = false;
-	public int teamID = 0;
+	private int teamID = -1;
+	private int damage = -1;
 
 	void Awake()
     {
@@ -32,31 +34,71 @@ public class AttackCollider : MonoBehaviour
 		int numHits = hits.Length;
 		if (numHits > 0)
 		{
-			for(int i = 0; i < numHits; i++)
+			for (int i = 0; i < numHits; i++)
 			{
 				RaycastHit hit = hits[i];
-				CellSlot hitCellSlot = hit.transform.GetComponent<CellSlot>();
-				if (hitCellSlot != null)
+				if (CheckHitForCell(hit))
+					break;
+			}
+		}
+
+		/// second raycast to check for fast movement gaps
+		Vector3 deltaPosition = rayOrigin - previousOrigin;
+		Vector3 deltaDirection = deltaPosition = raycastDirection;
+		RaycastHit[] deltaHits = Physics.RaycastAll(deltaPosition, deltaDirection);
+		int numDeltaHits = deltaHits.Length;
+		if (numDeltaHits > 0)
+		{
+			for (int i = 0; i < numDeltaHits; i++)
+			{
+				RaycastHit hit = hits[i];
+				if (CheckHitForCell(hit))
+					break;
+			}
+		}
+
+		previousOrigin = rayOrigin;
+	}
+
+	bool CheckHitForCell(RaycastHit hit)
+	{
+		bool bHitCell = false;
+		CombatantCell hitCombatCell = hit.transform.GetComponentInChildren<CombatantCell>();
+		if (hitCombatCell != null)
+		{
+			if (hitCombatCell.GetTeamID() != teamID)
+			{
+				if (myArsenal != null)
 				{
-					if (hitCellSlot.GetTeamID() != teamID)
-					{
-						myArsenal.AttackColliderHit(hit.transform);
-						SetEnabled(false);
-						break;
-					}
+					myArsenal.AttackColliderHit(hit.transform);
+					SetEnabled(false);
+					bHitCell = true;
 				}
 			}
 		}
+		CharacterCollider hitCharacter = hit.transform.GetComponent<CharacterCollider>();
+		if (!hitCharacter)
+			hitCharacter = hit.transform.GetComponentInChildren<CharacterCollider>();
+		if (hitCharacter != null)
+		{
+			hitCharacter.TakeHit(damage);
+			myArsenal.AttackColliderHit(hit.transform);
+			SetEnabled(false);
+			bHitCell = true;
+		}
+		return bHitCell;
 	}
 
-	public void InitAttackCollider(CellArsenal owningArsenal, int teamNumber)
+	public void InitAttackCollider(CellArsenal owningArsenal, int teamNumber, int dmg)
 	{
 		myArsenal = owningArsenal;
 		teamID = teamNumber;
+		damage = dmg;
 	}
 
 	public void SetEnabled(bool value)
 	{
 		bUpdating = value;
+		previousOrigin = transform.position + raycastOriginOffset;
 	}
 }

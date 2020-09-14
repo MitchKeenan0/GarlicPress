@@ -64,14 +64,23 @@ public class Battle : MonoBehaviour
 
 	private IEnumerator ResolveCells()
 	{
-		int cellCount = playerBoard.GetSlots().Count;
-		for(int i = 0; i < cellCount; i++)
+		/// oppose each row at a time
+		int rowCount = playerBoard.boardRowCount;
+		for (int i = 0; i < rowCount; i++)
 		{
-			CellSlot playerSlot = playerBoard.GetSlots()[i];
-			CellSlot opponentSlot = opponentBoard.GetSlots()[i];
-			ResolveCellPair(playerSlot, opponentSlot);
+			ResolveCellRow(i);
 			yield return new WaitForSeconds(cellResolveTime);
 		}
+		
+		/// loop thru each slot
+		//int cellCount = playerBoard.GetSlots().Count;
+		//for(int i = 0; i < cellCount; i++)
+		//{
+		//	CellSlot playerSlot = playerBoard.GetSlots()[i];
+		//	CellSlot opponentSlot = opponentBoard.GetSlots()[i];
+		//	ResolveCellPair(playerSlot, opponentSlot);
+		//	yield return new WaitForSeconds(cellResolveTime);
+		//}
 
 		if (BothCharactersAlive())
 		{
@@ -96,6 +105,24 @@ public class Battle : MonoBehaviour
 			StopAllCoroutines();
 			bool bPlayerWon = (playerHealth.GetHP() >= 1) && (playerBoard.GetNumCells() > 0);
 			battleUI.GameOver(bPlayerWon);
+		}
+	}
+
+	void ResolveCellRow(int rowIndex)
+	{
+		int numColumns = playerBoard.boardColumnCount;
+		int startingColumnIndexInBoard = playerBoard.boardRowCount * Mathf.Clamp(rowIndex, 0, numColumns - 1);
+		for(int i = 0; i < numColumns; i++)
+		{
+			int playerColumnIndex = startingColumnIndexInBoard + i;
+			CellSlot playerSlot = playerBoard.GetSlots()[playerColumnIndex];
+
+			int opponentColumnIndex = 0;
+			if (playerColumnIndex != 0)
+				opponentColumnIndex = (opponentBoard.GetSlots().Count - playerColumnIndex) - 1;
+			Debug.Log("trying opponent slot index " + opponentColumnIndex);
+			CellSlot opponentSlot = opponentBoard.GetSlots()[opponentColumnIndex];
+			ResolveCellPair(playerSlot, opponentSlot);
 		}
 	}
 

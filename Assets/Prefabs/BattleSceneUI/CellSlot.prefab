@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 120, y: 120}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5498307146117252551
 CanvasRenderer:
@@ -97,12 +97,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2580059171420725670}
   - component: {fileID: 2580059171420725669}
-  - component: {fileID: 2580059171420725668}
   - component: {fileID: 7079176489637802128}
   - component: {fileID: 5364810210908153828}
   - component: {fileID: 2580059171420725671}
   - component: {fileID: 5794805751304124582}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: CellSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,6 +120,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 614411460885164889}
+  - {fileID: 5458208319749478216}
   - {fileID: 2111971373494558656}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -138,35 +138,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2580059171420725665}
   m_CullTransparentMesh: 0
---- !u!114 &2580059171420725668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2580059171420725665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 248e7ccb504a8c346a105cfdf2aa2606, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
 --- !u!114 &7079176489637802128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlightCanvasGroup: {fileID: 220857155805221556}
   slotDamageParticles: {fileID: 7399879326977361716}
+  image: {fileID: 4175919905993936102}
 --- !u!114 &5364810210908153828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,7 +188,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0, g: 0, b: 0, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
     m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
@@ -235,7 +207,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 2580059171420725668}
+  m_TargetGraphic: {fileID: 4175919905993936102}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -265,6 +237,80 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 92
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &3615242780748996675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5458208319749478216}
+  - component: {fileID: 2708986283507640484}
+  - component: {fileID: 4175919905993936102}
+  m_Layer: 8
+  m_Name: CellSlotImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5458208319749478216
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3615242780748996675}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2580059171420725670}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 175, y: 175}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2708986283507640484
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3615242780748996675}
+  m_CullTransparentMesh: 0
+--- !u!114 &4175919905993936102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3615242780748996675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 248e7ccb504a8c346a105cfdf2aa2606, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
 --- !u!1001 &259639263524964517
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -276,6 +322,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BoardDamageParticles
+      objectReference: {fileID: 0}
+    - target: {fileID: 2379095974011898410, guid: d154ec2a7387aac49a70535dcfc5d473,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7290144182932885393, guid: d154ec2a7387aac49a70535dcfc5d473,
         type: 3}
@@ -320,7 +371,7 @@ PrefabInstance:
     - target: {fileID: 2221776886815102821, guid: d154ec2a7387aac49a70535dcfc5d473,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2221776886815102821, guid: d154ec2a7387aac49a70535dcfc5d473,
         type: 3}

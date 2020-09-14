@@ -27,7 +27,8 @@ public class CellArsenal : MonoBehaviour
 	public void InitCellArsenal(CellSlot slot)
 	{
 		mySlot = slot;
-		cellAttack.InitCellAttack(this, mySlot.GetTeamID());
+		myDamage = GetComponent<CombatantCell>().GetDamage();
+		cellAttack.InitCellAttack(this, mySlot.GetTeamID(), myDamage);
 	}
 
 	public virtual void StartHitAfterDelay(Transform attackerTransform, Transform targetTransform, int damage)
@@ -66,10 +67,11 @@ public class CellArsenal : MonoBehaviour
 
 		bool bAttackThrough = true;
 
-		CellSlot targetCellSlot = targetTransform.GetComponent<CellSlot>();
-		if (targetCellSlot != null)
+		CombatantCell targetCell = targetTransform.GetComponent<CombatantCell>();
+		if (!targetCell)
+			targetCell = targetTransform.GetComponentInChildren<CombatantCell>();
+		if (targetCell != null)
 		{
-			CombatantCell targetCell = targetCellSlot.GetCell();
 			if (targetCell != null)
 			{
 				CellData targetCellData = targetCell.GetCellData();
@@ -82,12 +84,15 @@ public class CellArsenal : MonoBehaviour
 			}
 
 			if (bAttackThrough)
-				targetCellSlot.TakeDamage(damage);
+			{
+				targetCell.TakeDamage(damage);
+				battleUI.ToastInteraction(targetCell.transform.position, damage, 0, "--");
+				battle.TestBattleOver();
+			}
 		}
-
-		if (bAttackThrough)
+		else
 		{
-			battleUI.ToastInteraction(targetCellSlot.transform.position, damage, 0, "--");
+			battleUI.ToastInteraction(targetTransform.position, damage, 0, "--");
 			battle.TestBattleOver();
 		}
 	}

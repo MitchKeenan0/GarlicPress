@@ -15,6 +15,7 @@ public class CombatantCell : MonoBehaviour
 	private int m_Damage = 0;
 	private int m_Health = 0;
 	private int m_Armour = 0;
+	private int m_teamID = -1;
 
 	public CellData GetCellData() { return cellData; }
 	public int GetDamage() { return m_Damage; }
@@ -24,6 +25,8 @@ public class CombatantCell : MonoBehaviour
 	public CellSlot GetSlot() { return mySlot; }
 	public void SetSlot(CellSlot value) { mySlot = value; }
 
+	public int GetTeamID() { return m_teamID; }
+
 	void Awake()
     {
 		cellImage = GetComponent<Image>();
@@ -32,6 +35,11 @@ public class CombatantCell : MonoBehaviour
 		arsenal = GetComponent<CellArsenal>();
 		ShowCanvasGroup(false);
 		mySlot = transform.parent.GetComponent<CellSlot>();
+	}
+
+	public void InitCombatantCell(int myTeamNumber)
+	{
+		m_teamID = myTeamNumber;
 	}
 
     public void LoadCellData(CellData cd)

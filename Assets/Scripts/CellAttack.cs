@@ -16,10 +16,10 @@ public class CellAttack : MonoBehaviour
 			attackCollider = GetComponentInChildren<AttackCollider>();
     }
 
-	public void InitCellAttack(CellArsenal owningArsenal, int teamID)
+	public void InitCellAttack(CellArsenal owningArsenal, int teamID, int dmg)
 	{
 		myArsenal = owningArsenal;
-		attackCollider.InitAttackCollider(owningArsenal, teamID);
+		attackCollider.InitAttackCollider(owningArsenal, teamID, dmg);
 	} 
 
     public virtual void StartAttack(Transform slotAttacker, Transform slotDefender)

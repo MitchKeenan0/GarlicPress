@@ -1148,6 +1148,7 @@ GameObject:
   - component: {fileID: 4765449109919724641}
   - component: {fileID: 4765449109919724654}
   - component: {fileID: 4765449109919724655}
+  - component: {fileID: 2549260941898550681}
   m_Layer: 5
   m_Name: InformationPanel
   m_TagString: Untagged
@@ -1248,6 +1249,21 @@ MonoBehaviour:
   damageStatPanel: {fileID: 5216599952103097514}
   healthStatPanel: {fileID: 3071859152299281684}
   armourStatPanel: {fileID: 5888399667255676822}
+--- !u!114 &2549260941898550681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4765449109919724643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 3, y: -3}
+  m_UseGraphicAlpha: 0
 --- !u!1 &4765449109964025712
 GameObject:
   m_ObjectHideFlags: 0
@@ -1637,7 +1653,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 150, y: 150}
+  m_CellSize: {x: 175, y: 175}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2

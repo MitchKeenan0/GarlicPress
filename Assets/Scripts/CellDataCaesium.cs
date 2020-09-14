@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CellDataCaesium : CellData
 {
+	public ParticleSystem reflectionParticlePrefab;
+
 	private BattleUI battleUI;
 
     void Start()
@@ -28,8 +30,7 @@ public class CellDataCaesium : CellData
 			{
 				if (!battleUI)
 					battleUI = FindObjectOfType<BattleUI>();
-				///battleUI.ToastInteraction(myCell.transform.position, targetCellDamage, 2, "dmg +");
-				///
+				battleUI.ToastInteraction(myCell.transform.position, targetCellDamage, 2, "reflect ");
 				bAttackThrough = false;
 				myCell.SetDamage(targetCellDamage);
 				myCell.GetComponent<CellArsenal>().StartHitAfterDelay(mySlot.transform, targetSlot.transform, myCell.GetDamage());
